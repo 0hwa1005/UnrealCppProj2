@@ -77,4 +77,5 @@ public:
 public:
 	FORCEINLINE class ACEquipment* GetEquipment() { return Equipment; }
 	FORCEINLINE class ACDoAction* GetDoAction() { return DoAction; }
+	FORCEINLINE class ACAttachment* GetAttachment() { return Attachment; }
 };

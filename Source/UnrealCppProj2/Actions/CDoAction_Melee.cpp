@@ -53,3 +53,19 @@ void ACDoAction_Melee::End_DoAction()
 
 	Index = 0;
 }
+
+void ACDoAction_Melee::OnAttachmentBeginOverlap(ACharacter * InAttacker, AActor * InAttackCauser, ACharacter * InOtherCharacter)
+{
+	CLog::Log(InOtherCharacter->GetName());
+
+	Super::OnAttachmentBeginOverlap(InAttacker, InAttackCauser, InOtherCharacter);
+	CheckNull(InOtherCharacter);
+
+	FDamageEvent e;
+
+	InOtherCharacter->TakeDamage(Datas[Index].Power, e, OwnerCharacter->GetController(), this);
+}
+
+void ACDoAction_Melee::OnAttachmentEndOverlap(ACharacter * InAttacker, AActor * InAttackCauser, ACharacter * InOtherCharacter)
+{
+}
