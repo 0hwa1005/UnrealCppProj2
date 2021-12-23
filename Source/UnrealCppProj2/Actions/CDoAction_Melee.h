@@ -4,6 +4,7 @@
 #include "Actions/CDoAction.h"
 #include "CDoACtion_Melee.generated.h"
 
+
 UCLASS()
 class UNREALCPPPROJ2_API ACDoAction_Melee : public ACDoAction
 {
@@ -32,5 +33,11 @@ public:
 	virtual void OnAttachmentEndOverlap(class ACharacter* InAttacker,
 										class AActor* InAttackCauser,
 										class ACharacter* InOtherCharacter) override;
+	
+	virtual void OnAttachmentCollision();
+	virtual void OffAttachmentCollision();
+
+private:
+	TArray<class ACharacter*> HittedCharacters;
 		
 };

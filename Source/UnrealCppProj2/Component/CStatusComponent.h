@@ -46,4 +46,7 @@ public:
 	void SetMove();
 	void SetStop();
 
+	void AddHealth(float InAmount);
+	void SubHealth(float InAmount);
+
 };

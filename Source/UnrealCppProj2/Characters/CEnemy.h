@@ -32,6 +32,10 @@ public:
 	float TakeDamage(float Damage, struct FDamageEvent const& DamageEvent,
 		AController* EventInstigator, AActor* DamageCauser)override;
 
+private:
+	UPROPERTY(EditAnywhere, Category = "Hitted")
+		float LaunchAmount = 100.0f;
+
 	UPROPERTY(VisibleDefaultsOnly)
 		class UCStatusComponent* Status;
 
@@ -54,4 +58,13 @@ protected:
 private:
 	UFUNCTION()
 		void OnStateTypeChanged(EStateType InPrevType, EStateType InNewType);
+	UFUNCTION()
+		void RestoreColor();
+
+private:
+	class AController* DamageInstigator;
+	float DamageValue;
+
+private:
+	void Hitted();
 };
