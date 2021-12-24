@@ -56,7 +56,7 @@ void ACDoAction_Melee::End_DoAction()
 
 void ACDoAction_Melee::OnAttachmentBeginOverlap(ACharacter * InAttacker, AActor * InAttackCauser, ACharacter * InOtherCharacter)
 {
-	CLog::Log(InOtherCharacter->GetName());
+	//CLog::Log(InOtherCharacter->GetName());
 
 	Super::OnAttachmentBeginOverlap(InAttacker, InAttackCauser, InOtherCharacter);
 	CheckNull(InOtherCharacter);

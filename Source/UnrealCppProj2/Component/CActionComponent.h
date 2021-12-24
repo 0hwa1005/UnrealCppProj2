@@ -10,6 +10,7 @@ UENUM(BlueprintType)
 enum class EActionType : uint8
 {
 	Unarmed,
+	Fist,
 	OneHand,
 	TwoHand,
 	Max
@@ -35,6 +36,8 @@ public:
 	UFUNCTION(BlueprintPure)
 		FORCEINLINE bool IsUnarmedMode() { return Type == EActionType::Unarmed; }
 	UFUNCTION(BlueprintPure)
+		FORCEINLINE bool IsFistMode() { return Type == EActionType::Fist; }
+	UFUNCTION(BlueprintPure)
 		FORCEINLINE bool IsOneHandMode() { return Type == EActionType::OneHand; }
 	UFUNCTION(BlueprintPure)
 		FORCEINLINE bool IsTwoHandMode() { return Type == EActionType::TwoHand; }
@@ -49,6 +52,7 @@ private:
 
 public:
 	void SetUnarmedMode();
+	void SetFistMode();
 	void SetOneHandMode();
 	void SetTwoHandMode();
 

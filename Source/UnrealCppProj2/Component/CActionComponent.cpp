@@ -71,6 +71,11 @@ void UCActionComponent::SetUnarmedMode()
 	//SetMode(EActionType::Unarmed);
 }
 
+void UCActionComponent::SetFistMode()
+{
+	SetMode(EActionType::Fist);
+}
+
 void UCActionComponent::SetOneHandMode()
 {
 	SetMode(EActionType::OneHand);

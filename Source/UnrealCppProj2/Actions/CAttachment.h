@@ -48,6 +48,9 @@ protected:
 	UFUNCTION(BlueprintCallable)
 		void AttachTo(FName InSocketName);
 
+	UFUNCTION(BlueprintCallable)
+		void AttachToCollision(class UShapeComponent* InComponent, FName InSocketName);
+
 	UPROPERTY(BlueprintReadOnly, VisibleDefaultsOnly)
 		class USceneComponent* Scene;
 
