@@ -79,4 +79,7 @@ public:
 	FORCEINLINE class ACDoAction* GetDoAction() { return DoAction; }
 	FORCEINLINE class ACAttachment* GetAttachment() { return Attachment; }
 	FORCEINLINE FLinearColor GetEquipmentColor() { return EquipmentColor; }
+
+private:
+	FString GetLabelName(class ACharacter* InOwnerCharacter, FString InName);
 };

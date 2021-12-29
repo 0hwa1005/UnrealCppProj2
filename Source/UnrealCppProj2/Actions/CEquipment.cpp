@@ -53,11 +53,13 @@ void ACEquipment::Begin_Equip_Implementation()
 
 void ACEquipment::End_Equip_Implementation()
 {
+	bEquipped = true;
 	State->SetIdleMode();
 }
 
 void ACEquipment::Unequip_Implementation()
 {
+	bEquipped = false;
 	if (OnUnequipmentDelegate.IsBound())
 		OnUnequipmentDelegate.Broadcast();
 

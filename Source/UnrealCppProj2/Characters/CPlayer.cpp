@@ -9,6 +9,7 @@
 #include "Component/CStatusComponent.h"
 #include "Component/CMontagesComponent.h"
 #include "Component/CActionComponent.h"
+#include "Component/CTargetComponent.h"
 #include "Materials/MaterialInstanceConstant.h"
 #include "Materials/MaterialInstanceDynamic.h"
 
@@ -23,6 +24,7 @@ ACPlayer::ACPlayer()
 	CHelpers::CreateActorComponent<UCStateComponent>(this, &State, "State");
 	CHelpers::CreateActorComponent<UCMontagesComponent>(this, &Montages, "Montages");
 	CHelpers::CreateActorComponent<UCActionComponent>(this, &Action, "Action");
+	CHelpers::CreateActorComponent<UCTargetComponent>(this, &Target, "Target");
 
 	bUseControllerRotationYaw = false;
 
@@ -89,6 +91,8 @@ void ACPlayer::SetupPlayerInputComponent(UInputComponent* PlayerInputComponent)
 	PlayerInputComponent->BindAction("Fist", EInputEvent::IE_Pressed, this, &ACPlayer::OnFist);
 	PlayerInputComponent->BindAction("OneHand", EInputEvent::IE_Pressed, this, &ACPlayer::OnOneHand);
 	PlayerInputComponent->BindAction("TwoHand", EInputEvent::IE_Pressed, this, &ACPlayer::OnTwoHand);
+	PlayerInputComponent->BindAction("Warp", EInputEvent::IE_Pressed, this, &ACPlayer::OnWarp);
+	PlayerInputComponent->BindAction("Target", EInputEvent::IE_Pressed, this, &ACPlayer::OnTarget);
 
 	PlayerInputComponent->BindAction("Action", EInputEvent::IE_Pressed, this, &ACPlayer::OnDoAction);
 
@@ -205,6 +209,17 @@ void ACPlayer::OnTwoHand()
 {
 	CheckFalse(State->IsIdleMode());
 	Action->SetTwoHandMode();
+}
+
+void ACPlayer::OnWarp()
+{
+	CheckFalse(State->IsIdleMode());
+	Action->SetWarpMode();
+}
+
+void ACPlayer::OnTarget()
+{
+	Target->ToggleTarget();
 }
 
 void ACPlayer::OnDoAction()

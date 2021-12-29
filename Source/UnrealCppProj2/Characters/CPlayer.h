@@ -44,6 +44,9 @@ private:
 	UPROPERTY(VisibleDefaultsOnly)
 		class UCMontagesComponent* Montages;
 
+	UPROPERTY(VisibleDefaultsOnly)
+		class UCTargetComponent* Target;
+
 private:
 	UFUNCTION()
 		void OnStateTypeChanged(EStateType InPrevType, EStateType InNewType);
@@ -67,6 +70,8 @@ private:
 	void OnFist();
 	void OnOneHand();
 	void OnTwoHand();
+	void OnWarp();
+	void OnTarget();
 	void OnDoAction();
 
 private:
