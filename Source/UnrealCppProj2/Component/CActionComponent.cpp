@@ -93,6 +93,11 @@ void UCActionComponent::SetFireStormMode()
 	SetMode(EActionType::FireStorm);
 }
 
+void UCActionComponent::SetIceBallMode()
+{
+	SetMode(EActionType::IceBall);
+}
+
 void UCActionComponent::DoAction()
 {
 	CheckTrue(IsUnarmedMode());
@@ -116,6 +121,17 @@ void UCActionComponent::OffAllCollision()
 			continue;
 
 		data->GetAttachment()->OffCollision();
+	}
+}
+
+void UCActionComponent::DoAim(bool InAim)
+{
+	CheckTrue(IsUnarmedMode());
+	if (!!Datas[(int32)Type])
+	{
+		ACDoAction* action = Datas[(int32)Type]->GetDoAction();
+		if (!!action)
+			InAim ? action->OnAim() : action->OffAim();
 	}
 }
 

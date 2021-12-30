@@ -72,9 +72,12 @@ private:
 	void OnTwoHand();
 	void OnWarp();
 	void OnFireStorm();
+	void OnIceBall();
 	void OnTarget();
 	void OnTargetLeft();
 	void OnTargetRight();
+	void OnAim();
+	void OffAim();
 	void OnDoAction();
 
 private:
