@@ -72,6 +72,8 @@ private:
 	void OnTwoHand();
 	void OnWarp();
 	void OnTarget();
+	void OnTargetLeft();
+	void OnTargetRight();
 	void OnDoAction();
 
 private:

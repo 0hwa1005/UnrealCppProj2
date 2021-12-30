@@ -47,4 +47,5 @@ public:
 	void PlayRoll();
 	void PlayBackStep();
 	void PlayHitted();
+	void PlayDead();
 };

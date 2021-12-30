@@ -4,6 +4,7 @@
 #include "Actions/CDoAction.h"
 #include "GameFramework/Character.h"
 #include "Actions/CEquipment.h"
+#include "Actions/CAttachment.h"
 
 UCActionComponent::UCActionComponent()
 {
@@ -97,6 +98,19 @@ void UCActionComponent::DoAction()
 
 		if (!!action)
 			action->DoAction();
+	}
+}
+
+void UCActionComponent::OffAllCollision()
+{
+	for (UCActionData* data : Datas)
+	{
+		if (!!data == false)
+			continue;
+		if (!!data->GetAttachment() == false)
+			continue;
+
+		data->GetAttachment()->OffCollision();
 	}
 }
 
