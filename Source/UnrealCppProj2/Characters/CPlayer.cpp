@@ -93,6 +93,7 @@ void ACPlayer::SetupPlayerInputComponent(UInputComponent* PlayerInputComponent)
 	PlayerInputComponent->BindAction("TwoHand", EInputEvent::IE_Pressed, this, &ACPlayer::OnTwoHand);
 
 	PlayerInputComponent->BindAction("Warp", EInputEvent::IE_Pressed, this, &ACPlayer::OnWarp);
+	PlayerInputComponent->BindAction("FireStorm", EInputEvent::IE_Pressed, this, &ACPlayer::OnFireStorm);
 
 	PlayerInputComponent->BindAction("Target", EInputEvent::IE_Pressed, this, &ACPlayer::OnTarget);
 	PlayerInputComponent->BindAction("TargetLeft", EInputEvent::IE_Pressed, this, &ACPlayer::OnTargetLeft);
@@ -219,6 +220,12 @@ void ACPlayer::OnWarp()
 {
 	CheckFalse(State->IsIdleMode());
 	Action->SetWarpMode();
+}
+
+void ACPlayer::OnFireStorm()
+{
+	CheckFalse(State->IsIdleMode());
+	Action->SetFireStormMode();
 }
 
 void ACPlayer::OnTarget()

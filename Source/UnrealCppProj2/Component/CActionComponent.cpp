@@ -88,6 +88,11 @@ void UCActionComponent::SetWarpMode()
 	SetMode(EActionType::Warp);
 }
 
+void UCActionComponent::SetFireStormMode()
+{
+	SetMode(EActionType::FireStorm);
+}
+
 void UCActionComponent::DoAction()
 {
 	CheckTrue(IsUnarmedMode());
