@@ -1,6 +1,6 @@
 #include "CActionComponent.h"
 #include "Global.h"
-#include "ACtions/CActionData.h"
+#include "Actions/CActionData.h"
 #include "Actions/CDoAction.h"
 #include "GameFramework/Character.h"
 #include "Actions/CEquipment.h"
@@ -14,39 +14,42 @@ void UCActionComponent::BeginPlay()
 {
 	Super::BeginPlay();
 
-	ACharacter* character = Cast<ACharacter>(GetOwner());
+
+	ACharacter* character = Cast<ACharacter>(GetOwner()); 
 	for (int32 i = 0; i < (int32)EActionType::Max; i++)
 	{
 		if (!!Datas[i])
-			Datas[i]->BeginPlay(character);
+			Datas[i]->BeginPlay(character); 
 	}
+
 }
 
 void UCActionComponent::ChangeType(EActionType InNewType)
 {
-	EActionType prevType = Type;
-	Type = InNewType;
+	EActionType prevType = Type; 
+	Type = InNewType; 
 	if (OnActionTypeChanged.IsBound())
 		OnActionTypeChanged.Broadcast(prevType, InNewType);
+
 }
 
 void UCActionComponent::SetMode(EActionType InType)
 {
 	if (Type == InType)
 	{
-		SetUnarmedMode();
-		return;
+		SetUnarmedMode(); 
+		return; 
 	}
 	else if (IsUnarmedMode() == false)
 	{
-		//:무기 해제
+		// : 무기 해제
 		ACEquipment* equipment = Datas[(int32)Type]->GetEquipment();
 		CheckNull(equipment);
 
 		equipment->Unequip();
 	}
 
-	//:무기 장착
+	// : 무기 장착 
 	if (!!Datas[(int32)InType])
 	{
 		ACEquipment* equipment = Datas[(int32)InType]->GetEquipment();
@@ -54,18 +57,20 @@ void UCActionComponent::SetMode(EActionType InType)
 		equipment->Equip();
 	}
 
-	ChangeType(InType);
+	ChangeType(InType); 
 }
 
 void UCActionComponent::SetUnarmedMode()
 {
 	if (!!Datas[(int32)Type])
 	{
-		ACEquipment* equipment = Datas[(int32)Type]->GetEquipment();
-		CheckNull(equipment);
-		equipment->Unequip();
+		ACEquipment* equipment = Datas[(int32)Type]->GetEquipment(); 
+		CheckNull(equipment); 
+
+		equipment->Unequip(); 
 	}
-	ChangeType(EActionType::Unarmed);
+
+	ChangeType(EActionType::Unarmed); 
 }
 
 void UCActionComponent::SetFistMode()
@@ -75,7 +80,7 @@ void UCActionComponent::SetFistMode()
 
 void UCActionComponent::SetOneHandMode()
 {
-	SetMode(EActionType::OneHand);
+	SetMode(EActionType::OneHand); 
 }
 
 void UCActionComponent::SetTwoHandMode()
@@ -90,24 +95,24 @@ void UCActionComponent::SetWarpMode()
 
 void UCActionComponent::SetFireStormMode()
 {
-	SetMode(EActionType::FireStorm);
+	SetMode(EActionType::FireStorm); 
 }
 
 void UCActionComponent::SetIceBallMode()
 {
-	SetMode(EActionType::IceBall);
+	SetMode(EActionType::IceBall); 
 }
 
 void UCActionComponent::DoAction()
 {
-	CheckTrue(IsUnarmedMode());
+	CheckTrue(IsUnarmedMode()); 
 
 	if (!!Datas[(int32)Type])
 	{
-		ACDoAction* action = Datas[(int32)Type]->GetDoAction();
+		ACDoAction* action = Datas[(int32)Type]->GetDoAction(); 
 
 		if (!!action)
-			action->DoAction();
+			action->DoAction(); 
 	}
 }
 
@@ -116,22 +121,23 @@ void UCActionComponent::OffAllCollision()
 	for (UCActionData* data : Datas)
 	{
 		if (!!data == false)
-			continue;
-		if (!!data->GetAttachment() == false)
-			continue;
+			continue; 
 
-		data->GetAttachment()->OffCollision();
+		if (!!data->GetAttachment() == false)
+			continue; 
+
+		data->GetAttachment()->OffCollision(); 
 	}
 }
 
 void UCActionComponent::DoAim(bool InAim)
 {
-	CheckTrue(IsUnarmedMode());
+	CheckTrue(IsUnarmedMode()); 
 	if (!!Datas[(int32)Type])
 	{
-		ACDoAction* action = Datas[(int32)Type]->GetDoAction();
+		ACDoAction* action = Datas[(int32)Type]->GetDoAction(); 
 		if (!!action)
-			InAim ? action->OnAim() : action->OffAim();
+			InAim ? action->OnAim() : action->OffAim(); 
 	}
 }
 

@@ -4,13 +4,13 @@
 #include "Blueprint/UserWidget.h"
 #include "CUserWidget_Name.generated.h"
 
+
 UCLASS()
 class UNREALCPPPROJ2_API UCUserWidget_Name : public UUserWidget
 {
 	GENERATED_BODY()
 
-public:
+public :
 	UFUNCTION(BlueprintImplementableEvent)
-		void SetNameText(const FString& InName);
-	
+		void SetNameText(const FString& InName); 
 };

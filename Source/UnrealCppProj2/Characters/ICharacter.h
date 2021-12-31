@@ -15,7 +15,7 @@ class UNREALCPPPROJ2_API IICharacter
 	GENERATED_BODY()
 
 public:
-	virtual void ChangeColor(FLinearColor InColor) = 0;
-	virtual void Begin_Dead(){}
-	virtual void End_Dead(){}
+	virtual void ChangeColor(FLinearColor InColor) = 0;		// << : 
+	virtual void Begin_Dead() {} 
+	virtual void End_Dead() {}
 };

@@ -3,28 +3,28 @@
 
 UCStateComponent::UCStateComponent()
 {
-
 }
+
 
 void UCStateComponent::BeginPlay()
 {
 	Super::BeginPlay();
-
 	
 }
 
 void UCStateComponent::ChangeType(EStateType InType)
 {
 	EStateType type = Type;
-	Type = InType;
+	Type = InType; 
 
 	if (OnStateTypeChanged.IsBound())
-		OnStateTypeChanged.Broadcast(type, InType);
+		OnStateTypeChanged.Broadcast(type, InType); 
+
 }
 
 void UCStateComponent::SetIdleMode()
 {
-	ChangeType(EStateType::Idle);
+	ChangeType(EStateType::Idle); 
 }
 
 void UCStateComponent::SetRollMode()
@@ -39,7 +39,7 @@ void UCStateComponent::SetBackstepMode()
 
 void UCStateComponent::SetEquipMode()
 {
-	ChangeType(EStateType::Equip);
+	ChangeType(EStateType::Equip); 
 }
 
 void UCStateComponent::SetActionMode()
@@ -54,7 +54,6 @@ void UCStateComponent::SetHittedMode()
 
 void UCStateComponent::SetDeadMode()
 {
-	ChangeType(EStateType::Dead);
+	ChangeType(EStateType::Dead); 
 }
-
 

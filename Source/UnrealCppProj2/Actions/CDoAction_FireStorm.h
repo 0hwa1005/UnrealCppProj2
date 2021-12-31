@@ -8,48 +8,49 @@ UCLASS()
 class UNREALCPPPROJ2_API ACDoAction_FireStorm : public ACDoAction
 {
 	GENERATED_BODY()
-
-public:
-	virtual void DoAction() override;
-	virtual void Begin_DoAction() override;
-	virtual void End_DoAction() override;
-	virtual void Tick(float DeltaTime) override;
-
+	
 protected:
 	virtual void BeginPlay() override;
 
-private:
-	class UBoxComponent* Box;
-	class UParticleSystemComponent* Attached;
+public:
+	virtual void DoAction() override;
+	virtual void Begin_DoAction()override;
+	virtual void End_DoAction() override;
+	virtual void Tick(float DeltaTime) override;
 
-private:
-	UPROPERTY(EditAnywhere)
-		float Time = 5.0f;
-	UPROPERTY(EditAnywhere)
-		float Distance = 200.0f;
-	UPROPERTY(EditAnywhere)
-		float Speed = 100.0f;
-	UPROPERTY(EditAnywhere)
-		float HittedTime = 0.25f;
 
-private:
-	float Angle;
+private :
+	class UBoxComponent*			Box; 
+	class UParticleSystemComponent* Attached; 
 
-	TArray<class ACharacter*> HittedCharacter;
+private :
+	UPROPERTY(EditAnywhere)
+		float Time = 5.0f; 
+	UPROPERTY(EditAnywhere)
+		float Distance = 200.0f; 
+	UPROPERTY(EditAnywhere)
+		float Speed = 100.0f; 
+	UPROPERTY(EditAnywhere)
+		float HittedTime = 0.25f; 
 
-private:
+private :
+	float Angle; 
+
+	TArray<class ACharacter*>	HittedCharacter; 
+
+private :
 	UFUNCTION()
-		void Finish();
-	UFUNCTION()
-		void Hitted();
+		void Finish(); 
 
-private:
+	UFUNCTION()
+		void Hitted(); 
+
+private :
 	virtual void OnAttachmentBeginOverlap(class ACharacter* InAttacker,
 		class AActor* InAttackCauser,
-		class ACharacter* InOtherCharacter) override;
-
+		class ACharacter* InOtherCharacter) override; 
+	
 	virtual void OnAttachmentEndOverlap(class ACharacter* InAttacker,
 		class AActor* InAttackCauser,
-		class ACharacter* InOtherCharacter) override;
-
+		class ACharacter* InOtherCharacter) override; 
 };

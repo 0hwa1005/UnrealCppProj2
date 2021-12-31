@@ -4,23 +4,22 @@
 
 UCMontagesComponent::UCMontagesComponent()
 {
-
 }
 
 void UCMontagesComponent::BeginPlay()
 {
 	Super::BeginPlay();
 
-	CheckNull(DataTable);
+	CheckNull(DataTable); 
 
-	TArray<FMontageData*> datas;
-	DataTable->GetAllRows<FMontageData>("", datas);
+	TArray<FMontageData*> datas; 
+	DataTable->GetAllRows<FMontageData>("", datas); 
 
-	/*for (const FMontageData* data : datas)
-	{
-		CLog::Log(data->AnimMontage->GetPathName());
-		CLog::Print(data->AnimMontage->GetPathName());
-	}*/
+	//for (const FMontageData* data : datas)
+	//{
+	//	CLog::Log(data->AnimMontage->GetPathName()); 
+	//	CLog::Print(data->AnimMontage->GetPathName());
+	//}
 
 	for (int32 i = 0; i < (int32)EStateType::Max; i++)
 	{
@@ -28,33 +27,35 @@ void UCMontagesComponent::BeginPlay()
 		{
 			if ((EStateType)i == data->Type)
 			{
-				Datas[i] = data;
-				continue;
+				Datas[i] = data; 
+				continue; 
 			}
 		}
 	}
+
 }
 
 void UCMontagesComponent::PlayAnimMontage(EStateType InState)
 {
 	ACharacter* character = Cast<ACharacter>(GetOwner());
 
-	const FMontageData* data = Datas[(int32)InState];
+	const FMontageData* data = Datas[(int32)InState]; 
 	if (!!data)
 	{
 		if (!!data->AnimMontage)
-			character->PlayAnimMontage(data->AnimMontage, data->PlayRatio, data->StartSection);
+			character->PlayAnimMontage(data->AnimMontage,
+				data->PlayRatio, data->StartSection); 
 	}
 }
 
 void UCMontagesComponent::PlayRoll()
 {
-	PlayAnimMontage(EStateType::Roll);
+	PlayAnimMontage(EStateType::Roll); 
 }
 
-void UCMontagesComponent::PlayBackStep()
+void UCMontagesComponent::PlayBackstep()
 {
-	PlayAnimMontage(EStateType::Backstep);
+	PlayAnimMontage(EStateType::Backstep); 
 }
 
 void UCMontagesComponent::PlayHitted()

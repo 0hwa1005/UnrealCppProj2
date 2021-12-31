@@ -14,14 +14,14 @@ protected:
 
 public:
 	virtual void DoAction() override;
-	virtual void Begin_DoAction() override;
+	virtual void Begin_DoAction()override;
 	virtual void End_DoAction() override;
 	virtual void Tick(float DeltaTime) override;
 
-	virtual void OnAim() override;
-	virtual void OffAim() override;
+	virtual void OnAim() override; 
+	virtual void OffAim() override; 
+private :
+	class UCAim* Aim; 
 
-private:
-	class UCAim* Aim;
-	
+
 };

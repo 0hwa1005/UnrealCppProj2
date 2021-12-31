@@ -9,8 +9,7 @@ class UNREALCPPPROJ2_API UCAnimNotify_BeginAction : public UAnimNotify
 {
 	GENERATED_BODY()
 
-public:
+public :
 	FString GetNotifyName_Implementation() const override;
-	virtual void Notify(USkeletalMeshComponent* MeshComp, UAnimSequenceBase* Animation);
-	
+	virtual void Notify(USkeletalMeshComponent* MeshComp, UAnimSequenceBase* Animation) override;
 };

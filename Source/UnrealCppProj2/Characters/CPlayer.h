@@ -2,12 +2,12 @@
 
 #include "CoreMinimal.h"
 #include "GameFramework/Character.h"
-#include "Component/CStateComponent.h"
-#include "Characters/ICharacter.h"
+#include "Component/CStateComponent.h"	// << : 
+#include "Characters/ICharacter.h"		// << : 
 #include "CPlayer.generated.h"
 
 UCLASS()
-class UNREALCPPPROJ2_API ACPlayer : public ACharacter, public IICharacter
+class UNREALCPPPROJ2_API ACPlayer : public ACharacter , public IICharacter
 {
 	GENERATED_BODY()
 
@@ -17,10 +17,11 @@ public:
 protected:
 	virtual void BeginPlay() override;
 
-public:	
+public:
 	virtual void Tick(float DeltaTime) override;
 
 	virtual void SetupPlayerInputComponent(class UInputComponent* PlayerInputComponent) override;
+
 
 private:
 	UPROPERTY(VisibleDefaultsOnly)
@@ -42,48 +43,48 @@ private:
 		class UCActionComponent* Action;
 
 	UPROPERTY(VisibleDefaultsOnly)
-		class UCMontagesComponent* Montages;
+		class UCMontagesComponent* Montages; 
 
-	UPROPERTY(VisibleDefaultsOnly)
-		class UCTargetComponent* Target;
+	UPROPERTY(VisibleAnywhere) // VisibleDefaultsOnly
+		class UCTargetComponent2* Target;
+
 
 private:
 	UFUNCTION()
-		void OnStateTypeChanged(EStateType InPrevType, EStateType InNewType);
+		void OnStateTypeChanged(EStateType InPrevType, EStateType InNewType); 
 
 private:
-	void OnMoveForward(float InAxis);
-	void OnMoveRight(float InAxis);
-	void OnHorizontalLook(float InAxis);
-	void OnVerticalLook(float InAxis);
+	void OnMoveForward(float InAxis); 
+	void OnMoveRight(float InAxis); 
+	void OnHorizontalLook(float InAxis); 
+	void OnVerticalLook(float InAxsi); 
 
-	void OnAvoid();
+	void OnAvoid(); 
 
-	void Begin_Roll();
-	void Begin_Backstep();
+	void Begin_Roll(); 
+	void Begin_Backstep(); 
+public :
+	void End_Roll(); 
+	void End_Backstep(); 
 
-public:
-	void End_Roll();
-	void End_Backstep();
+private :
+	void OnFist(); 
+	void OnOneHand(); 
+	void OnTwoHand(); 
+	void OnWarp(); 
+	void OnFireStorm(); 
+	void OnIceBall(); 
+	void OnTarget(); 
+	void OnTargetLeft(); 
+	void OnTargetRight(); 
+	void OnAim(); 
+	void OffAim(); 
+	void OnDoAction(); 
 
-private:
-	void OnFist();
-	void OnOneHand();
-	void OnTwoHand();
-	void OnWarp();
-	void OnFireStorm();
-	void OnIceBall();
-	void OnTarget();
-	void OnTargetLeft();
-	void OnTargetRight();
-	void OnAim();
-	void OffAim();
-	void OnDoAction();
-
-private:
-	class UMaterialInstanceDynamic* BodyMaterial;
+private :
+	class UMaterialInstanceDynamic* BodyMaterial; 
 	class UMaterialInstanceDynamic* LogoMaterial;
 
-public:
-	virtual void ChangeColor(FLinearColor InColor) override;
-};
+public :
+	virtual void ChangeColor(FLinearColor InColor) override; 
+}; 

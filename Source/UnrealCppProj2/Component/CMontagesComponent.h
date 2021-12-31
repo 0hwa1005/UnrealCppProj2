@@ -2,25 +2,26 @@
 
 #include "CoreMinimal.h"
 #include "Components/ActorComponent.h"
-#include "Component/CStateComponent.h"
-#include "Engine/DataTable.h"
+#include "Component/CStateComponent.h"		// << : 
+#include "Engine/DataTable.h"			
 #include "CMontagesComponent.generated.h"
 
 USTRUCT(BlueprintType)
-struct FMontageData : public FTableRowBase
+struct FMontageData : public FTableRowBase 
 {
 	GENERATED_BODY()
 
-public:
+public :
 	UPROPERTY(EditAnywhere)
-		EStateType Type;
+		EStateType Type; 
 	UPROPERTY(EditAnywhere)
-		class UAnimMontage* AnimMontage;
+		class UAnimMontage* AnimMontage; 
 	UPROPERTY(EditAnywhere)
-		float PlayRatio = 1.0f;
+		float PlayRatio = 1.0f; 
 	UPROPERTY(EditAnywhere)
-		FName StartSection;
+		FName StartSection; 
 };
+
 
 UCLASS( ClassGroup=(Custom), meta=(BlueprintSpawnableComponent) )
 class UNREALCPPPROJ2_API UCMontagesComponent : public UActorComponent
@@ -35,17 +36,17 @@ protected:
 
 private:
 	UPROPERTY(EditDefaultsOnly, Category = "DataTable")
-		UDataTable* DataTable;
+		UDataTable* DataTable; 
 
 private:
-	FMontageData* Datas[(int32)EStateType::Max];
+	FMontageData* Datas[(int32)EStateType::Max]; 
 
-private:
-	void PlayAnimMontage(EStateType InState);
+private :
+	void PlayAnimMontage(EStateType InState); 
 
-public:
-	void PlayRoll();
-	void PlayBackStep();
-	void PlayHitted();
-	void PlayDead();
+public :
+	void PlayRoll(); 
+	void PlayBackstep(); 
+	void PlayHitted(); 
+	void PlayDead(); 
 };

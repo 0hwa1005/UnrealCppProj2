@@ -11,18 +11,17 @@ class UNREALCPPPROJ2_API ACDoAction_Warp : public ACDoAction
 
 public:
 	virtual void DoAction() override;
-	virtual void Begin_DoAction() override;
+	virtual void Begin_DoAction()override;
 	virtual void End_DoAction() override;
-	virtual void Tick(float DeltaTime) override;
+	virtual void Tick(float DeltaTime) override; 
 
-protected:
-	virtual void BeginPlay() override;
+protected :
+	virtual void BeginPlay() override; 
 
-private:
-	class UDecalComponent* Decal;
-	FVector Location;
+private :
+	class UDecalComponent* Decal; 
+	FVector		Location; 
 
-private:
-	bool GetCursorLocationAndRotation(FVector& OutLocation, FRotator& OutRotator);
-	
+private :
+	bool GetCursorLocationAndRotation(FVector& OutLocation, FRotator& OutRotator); 
 };

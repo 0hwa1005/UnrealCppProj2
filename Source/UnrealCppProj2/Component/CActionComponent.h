@@ -1,5 +1,3 @@
-// Fill out your copyright notice in the Description page of Project Settings.
-
 #pragma once
 
 #include "CoreMinimal.h"
@@ -9,13 +7,13 @@
 UENUM(BlueprintType)
 enum class EActionType : uint8
 {
-	Unarmed,
-	Fist,
-	OneHand,
-	TwoHand,
-	Warp,
-	FireStorm,
-	IceBall,
+	Unarmed , 
+	Fist ,
+	OneHand , 
+	TwoHand , 
+	Warp ,
+	FireStorm ,
+	IceBall , 
 	Max
 };
 
@@ -32,10 +30,10 @@ public:
 protected:
 	virtual void BeginPlay() override;
 
-private:
-	EActionType Type;
+private :
+	EActionType	Type; 
 
-public:
+public :
 	UFUNCTION(BlueprintPure)
 		FORCEINLINE bool IsUnarmedMode() { return Type == EActionType::Unarmed; }
 	UFUNCTION(BlueprintPure)
@@ -51,34 +49,33 @@ public:
 	UFUNCTION(BlueprintPure)
 		FORCEINLINE bool IsIceBallMode() { return Type == EActionType::IceBall; }
 
-public:
+public :
 	UPROPERTY(BlueprintAssignable)
-		FActionTypeChanged OnActionTypeChanged;
+		FActionTypeChanged OnActionTypeChanged; 
 
-private:
-	void ChangeType(EActionType InNewType);
-	void SetMode(EActionType InType);
+private :
+	void ChangeType(EActionType InNewType); 
+	void SetMode(EActionType InType); 
 
-public:
-	void SetUnarmedMode();
-	void SetFistMode();
-	void SetOneHandMode();
+public :
+	void SetUnarmedMode(); 
+	void SetFistMode(); 
+	void SetOneHandMode(); 
 	void SetTwoHandMode();
-	void SetWarpMode();
-	void SetFireStormMode();
-	void SetIceBallMode();
+	void SetWarpMode(); 
+	void SetFireStormMode(); 
+	void SetIceBallMode(); 
 
-private:
+private :
 	UPROPERTY(EditDefaultsOnly, Category = "Weapons")
-		class UCActionData* Datas[(int32)EActionType::Max];
+		class UCActionData* Datas[(int32)EActionType::Max]; 
 
-public:
+public :
 	UFUNCTION(BlueprintPure)
 		FORCEINLINE class UCActionData* GetCurrent() { return Datas[(int32)Type]; }
 
-public:
-	void DoAction();
-	void OffAllCollision();
-	void DoAim(bool InAim);
-
+public :
+	void DoAction(); 
+	void OffAllCollision(); 
+	void DoAim(bool InAim); 
 };

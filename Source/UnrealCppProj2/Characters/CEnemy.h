@@ -3,11 +3,11 @@
 #include "CoreMinimal.h"
 #include "GameFramework/Character.h"
 #include "Characters/ICharacter.h"
-#include "Component/CStateComponent.h"
+#include "Component/CStateComponent.h"	// << : 
 #include "CEnemy.generated.h"
 
 UCLASS()
-class UNREALCPPPROJ2_API ACEnemy : public ACharacter, public IICharacter
+class UNREALCPPPROJ2_API ACEnemy : public ACharacter , public IICharacter
 {
 	GENERATED_BODY()
 
@@ -20,8 +20,6 @@ protected:
 public:	
 	virtual void Tick(float DeltaTime) override;
 
-	//virtual void SetupPlayerInputComponent(class UInputComponent* PlayerInputComponent) override;
-
 private:
 	class UMaterialInstanceDynamic* BodyMaterial;
 	class UMaterialInstanceDynamic* LogoMaterial;
@@ -29,13 +27,17 @@ private:
 public:
 	virtual void ChangeColor(FLinearColor InColor) override;
 
+
+
+
 	float TakeDamage(float Damage, struct FDamageEvent const& DamageEvent,
-		AController* EventInstigator, AActor* DamageCauser)override;
+		AController* EventInstigator, AActor* DamageCauser) override; 
 
-private:
+private :
 	UPROPERTY(EditAnywhere, Category = "Hitted")
-		float LaunchAmount = 100.0f;
+		float LaunchAmount = 100.0f; 
 
+private :
 	UPROPERTY(VisibleDefaultsOnly)
 		class UCStatusComponent* Status;
 
@@ -48,29 +50,31 @@ private:
 	UPROPERTY(VisibleDefaultsOnly)
 		class UCMontagesComponent* Montages;
 
-protected:
+
+protected :
 	UPROPERTY(VisibleDefaultsOnly)
-		class UWidgetComponent* NameWidget;
+		class UWidgetComponent* NameWidget; 
 
 	UPROPERTY(VisibleDefaultsOnly)
 		class UWidgetComponent* HealthWidget;
 
-private:
+
+
+private :
 	UFUNCTION()
-		void OnStateTypeChanged(EStateType InPrevType, EStateType InNewType);
+		void OnStateTypeChanged(EStateType InPrevType, EStateType InNewType); 
+
 	UFUNCTION()
 		void RestoreColor();
 
-private:
-	class AController* DamageInstigator;
-	float DamageValue;
+private :
+	class AController* DamageInstigator; 
+	float DamageValue; 
+private :
+	void Hitted(); 
+	void Dead(); 
 
-private:
-	void Hitted();
-	void Dead();
-
-public:
-	virtual void Begin_Dead() override;
-	virtual void End_Dead() override;
-
+public :
+	virtual void Begin_Dead() override; 
+	virtual void End_Dead() override; 
 };

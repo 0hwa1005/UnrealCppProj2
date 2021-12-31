@@ -5,6 +5,7 @@
 #include "Actions/CDoAction.h"
 #include "Component/CActionComponent.h"
 
+
 FString UCAnimNotify_BeginAction::GetNotifyName_Implementation() const
 {
 	return "BeginAction";
@@ -19,10 +20,7 @@ void UCAnimNotify_BeginAction::Notify(USkeletalMeshComponent* MeshComp, UAnimSeq
 
 	UCActionComponent* action = CHelpers::GetComponent<UCActionComponent>
 		(MeshComp->GetOwner());
-
 	CheckNull(action);
-
-	action->GetCurrent()->GetDoAction()->Begin_DoAction();
-
+	
+	action->GetCurrent()->GetDoAction()->Begin_DoAction(); 
 }
-

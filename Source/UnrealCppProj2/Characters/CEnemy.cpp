@@ -2,40 +2,41 @@
 #include "Global.h"
 #include "GameFramework/CharacterMovementComponent.h"
 #include "Components/SkeletalMeshComponent.h"
-#include "Animation/Animinstance.h"
-
-#include "Component/CStatusComponent.h"
-#include "Component/CMontagesComponent.h"
-#include "Component/CActionComponent.h"
-
 #include "Components/WidgetComponent.h"
 #include "Components/CapsuleComponent.h"
+#include "Animation/Animinstance.h"
+#include "Component/CStatusComponent.h"	// << : 
+#include "Component/CMontagesComponent.h"
+#include "Component/CActionComponent.h"	
 #include "Widgets/CUserWidget_Name.h"
 #include "Widgets/CUserWidget_Health.h"
-
 #include "Materials/MaterialInstanceConstant.h"
 #include "Materials/MaterialInstanceDynamic.h"
-
 #include "Actions/CActionData.h"
-
 
 ACEnemy::ACEnemy()
 {
- 	PrimaryActorTick.bCanEverTick = true;
+	PrimaryActorTick.bCanEverTick = true;
 
-	CHelpers::CreateComponent<UWidgetComponent>(this, &NameWidget, "NameWidget", GetMesh());
-	CHelpers::CreateComponent<UWidgetComponent>(this, &HealthWidget, "HealthWidget", GetMesh());
+	CHelpers::CreateComponent<UWidgetComponent>(this, &NameWidget,
+		"NameWidget", GetMesh()); 
+	CHelpers::CreateComponent<UWidgetComponent>(this, &HealthWidget,
+		"HealthWidget", GetMesh());
+
+
 
 	CHelpers::CreateActorComponent<UCStatusComponent>(this, &Status, "Status");
 	CHelpers::CreateActorComponent<UCStateComponent>(this, &State, "State");
 	CHelpers::CreateActorComponent<UCMontagesComponent>(this, &Montages, "Montages");
 	CHelpers::CreateActorComponent<UCActionComponent>(this, &Action, "Action");
 
+
 	GetMesh()->SetRelativeLocation(FVector(0, 0, -90));
-	GetMesh()->SetRelativeRotationExact(FRotator(0, -90, 0));
+	GetMesh()->SetRelativeRotation(FRotator(0, -90, 0));
 
 	USkeletalMesh* mesh;
-	CHelpers::GetAsset<USkeletalMesh>(&mesh, "SkeletalMesh'/Game/Character/Mesh/SK_Mannequin.SK_Mannequin'");
+	CHelpers::GetAsset<USkeletalMesh>(&mesh,
+		"SkeletalMesh'/Game/Character/Mesh/SK_Mannequin.SK_Mannequin'");
 	GetMesh()->SetSkeletalMesh(mesh);
 
 	TSubclassOf<UAnimInstance> animInstance;
@@ -44,19 +45,23 @@ ACEnemy::ACEnemy()
 
 	GetCharacterMovement()->RotationRate = FRotator(0, 720, 0);
 
-	TSubclassOf<UCUserWidget_Name> nameClass;
-	CHelpers::GetClass<UCUserWidget_Name>(&nameClass, "WidgetBlueprint'/Game/Widget/WB_Name.WB_Name_C'");
-	NameWidget->SetWidgetClass(nameClass);
-	NameWidget->SetRelativeLocation(FVector(0, 0, 240));
-	NameWidget->SetDrawSize(FVector2D(240, 30));
-	NameWidget->SetWidgetSpace(EWidgetSpace::Screen);
+	TSubclassOf<UCUserWidget_Name> nameClass; 
+	CHelpers::GetClass<UCUserWidget_Name>(&nameClass,
+		"WidgetBlueprint'/Game/Widgets/WB_Name.WB_Name_C'"); 
+	NameWidget->SetWidgetClass(nameClass); 
+	NameWidget->SetRelativeLocation(FVector(0, 0, 240)); 
+	NameWidget->SetDrawSize(FVector2D(240, 30)); 
+	NameWidget->SetWidgetSpace(EWidgetSpace::Screen); 
 
 	TSubclassOf<UCUserWidget_Health> healthClass;
-	CHelpers::GetClass<UCUserWidget_Health>(&healthClass, "WidgetBlueprint'/Game/Widget/WB_Health.WB_Health_C'");
+	CHelpers::GetClass<UCUserWidget_Health>(&healthClass,
+		"WidgetBlueprint'/Game/Widgets/WB_Health.WB_Health_C'");
 	HealthWidget->SetWidgetClass(healthClass);
 	HealthWidget->SetRelativeLocation(FVector(0, 0, 190));
 	HealthWidget->SetDrawSize(FVector2D(120, 20));
 	HealthWidget->SetWidgetSpace(EWidgetSpace::Screen);
+
+
 }
 
 void ACEnemy::BeginPlay()
@@ -77,14 +82,16 @@ void ACEnemy::BeginPlay()
 
 	Super::BeginPlay();
 
-	State->OnStateTypeChanged.AddDynamic(this, &ACEnemy::OnStateTypeChanged);
+	State->OnStateTypeChanged.AddDynamic(this, &ACEnemy::OnStateTypeChanged); 
 
-	NameWidget->InitWidget();
-	Cast<UCUserWidget_Name>(NameWidget->GetUserWidgetObject())->SetNameText(GetActorLabel());//lable->숫자 출력안할려고
-	
-	HealthWidget->InitWidget();
-	Cast<UCUserWidget_Health>(HealthWidget->GetUserWidgetObject())->Update(Status->GetHealth(),Status->GetMaxHealth());
+	NameWidget->InitWidget(); 
+	Cast<UCUserWidget_Name>(NameWidget->GetUserWidgetObject())->SetNameText(GetActorLabel()); 
 
+	HealthWidget->InitWidget(); 
+	Cast<UCUserWidget_Health>(HealthWidget->GetUserWidgetObject())->Update(Status->GetHealth(),
+		Status->GetMaxHealth()); 
+
+	Action->SetUnarmedMode(); 
 }
 
 void ACEnemy::Tick(float DeltaTime)
@@ -96,84 +103,87 @@ void ACEnemy::Tick(float DeltaTime)
 void ACEnemy::ChangeColor(FLinearColor InColor)
 {
 	BodyMaterial->SetVectorParameterValue("BodyColor", InColor);
-	LogoMaterial->SetVectorParameterValue("BodyColor", InColor);//Logo에도 Body로 되어있어서 BodyColor씀
+	LogoMaterial->SetVectorParameterValue("BodyColor", InColor);
 }
 
-float ACEnemy::TakeDamage(float Damage, FDamageEvent const & DamageEvent, AController * EventInstigator, AActor * DamageCauser)
+float ACEnemy::TakeDamage(float Damage, FDamageEvent const& DamageEvent, AController* EventInstigator, AActor* DamageCauser)
 {
-	//Super::TakeDamage(Damage, DamageEvent, EventInstigator, DamageCauser);
-	//CLog::Log(Damage);
+	//Super::TakeDamage(Damage, DamageEvent, EventInstigator, DamageCauser); 
+	//CLog::Log(Damage); 
 
-	DamageInstigator = EventInstigator;
+	DamageInstigator = EventInstigator; 
 	DamageValue = Super::TakeDamage(Damage, DamageEvent, EventInstigator, DamageCauser);
 
-	State->SetHittedMode();
-	return Status->GetHealth();
+	State->SetHittedMode(); 
+
+	return Status->GetHealth(); 
 }
 
 void ACEnemy::OnStateTypeChanged(EStateType InPrevType, EStateType InNewType)
 {
 	switch (InNewType)
 	{
-		case EStateType::Hitted: Hitted(); break;
-		case EStateType::Dead: Dead(); break;
+	case EStateType::Hitted: Hitted(); break; 
+	case EStateType::Dead: Dead(); break; 
 	}
 }
 
 void ACEnemy::RestoreColor()
 {
-	FLinearColor color = Action->GetCurrent()->GetEquipmentColor();
-	ChangeColor(color);
+	FLinearColor color = Action->GetCurrent()->GetEquipmentColor(); 
+	ChangeColor(color); 
 }
 
 void ACEnemy::Hitted()
 {
-	Status->SubHealth(DamageValue);
-	Cast<UCUserWidget_Health>(HealthWidget->GetUserWidgetObject())->Update(Status->GetHealth(),
-		Status->GetMaxHealth());
-	DamageValue = 0.0f;
+	Status->SubHealth(DamageValue); 
+	Cast<UCUserWidget_Health>(HealthWidget->GetUserWidgetObject())->Update(
+		Status->GetHealth(),
+		Status->GetMaxHealth()
+	); 
+	DamageValue = 0.0f; 
 
-	Status->SetStop();
+	Status->SetStop(); 
 
 	if (Status->GetHealth() <= 0.0f)
 	{
-		State->SetDeadMode();
-		return;
+		State->SetDeadMode(); 
+		return; 
 	}
 
-	Montages->PlayHitted();
+	Montages->PlayHitted(); 
 
-	//뒤로 밀림
-	FVector start = GetActorLocation();
-	FVector target = DamageInstigator->GetPawn()->GetActorLocation();
+	// >> : 
+	FVector start = GetActorLocation(); 
+	FVector target = DamageInstigator->GetPawn()->GetActorLocation(); 
 
-	SetActorRotation(UKismetMathLibrary::FindLookAtRotation(start, target));
-	DamageInstigator = NULL;
+	SetActorRotation(UKismetMathLibrary::FindLookAtRotation(start, target)); 
+	DamageInstigator = NULL; 
 
-	FVector direction = target - start;
-	direction.Normalize();
-	LaunchCharacter(-direction * LaunchAmount, true, false);
+	FVector direction = target - start; 
+	direction.Normalize(); 
+	LaunchCharacter(-direction * LaunchAmount, true, false); 
+	// << : 
 
-	//색 변경
-	ChangeColor(FLinearColor(1, 0, 0, 1));
-	UKismetSystemLibrary::K2_SetTimer(this, "RestoreColor", 0.1f, false);
-
+	ChangeColor(FLinearColor(1, 0, 0, 1)); 
+	UKismetSystemLibrary::K2_SetTimer(this, "RestoreColor", 0.1f, false); 
 }
 
 void ACEnemy::Dead()
 {
-	CheckFalse(State->IsDeadMode());
+	CheckFalse(State->IsDeadMode()); 
 
-	Montages->PlayDead();
+	Montages->PlayDead(); 
 }
 
 void ACEnemy::Begin_Dead()
 {
-	Action->OffAllCollision();
-	GetCapsuleComponent()->SetCollisionEnabled(ECollisionEnabled::NoCollision);
+	Action->OffAllCollision(); 
+	GetCapsuleComponent()->SetCollisionEnabled(ECollisionEnabled::NoCollision); 
+
 }
 
 void ACEnemy::End_Dead()
 {
-	Destroy();
+	Destroy(); 
 }

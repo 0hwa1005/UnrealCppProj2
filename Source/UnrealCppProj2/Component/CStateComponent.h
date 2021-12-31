@@ -4,22 +4,21 @@
 #include "Components/ActorComponent.h"
 #include "CStateComponent.generated.h"
 
-
 UENUM(BlueprintType)
-enum class EStateType:uint8
+enum class EStateType : uint8
 {
-	Idle,
-	Roll,
-	Backstep,
-	Equip,
-	//Unequip,
-	Action,
-	Hitted,
+	Idle , 
+	Roll , 
+	Backstep , 
+	Equip , 
+	//Unequip , 
+	Action, 
+	Hitted, 
 	Dead,
-	Max
+	Max ,
 };
 
-DECLARE_DYNAMIC_MULTICAST_DELEGATE_TwoParams(FStateTypeChanged, EStateType, InPrevType, EStateType, InNewType);
+DECLARE_DYNAMIC_MULTICAST_DELEGATE_TwoParams(FStateTypeChanged, EStateType, InPrevType, EStateType, InNewType); 
 
 UCLASS( ClassGroup=(Custom), meta=(BlueprintSpawnableComponent) )
 class UNREALCPPPROJ2_API UCStateComponent : public UActorComponent
@@ -32,16 +31,17 @@ public:
 protected:
 	virtual void BeginPlay() override;
 
-private:
-	EStateType Type;
+private :
+	EStateType Type; 
 
-public:
+public :
 	UFUNCTION(BlueprintPure)
 		FORCEINLINE bool IsIdleMode() { return Type == EStateType::Idle; }
 	UFUNCTION(BlueprintPure)
 		FORCEINLINE bool IsRollMode() { return Type == EStateType::Roll; }
 	UFUNCTION(BlueprintPure)
 		FORCEINLINE bool IsBackstepMode() { return Type == EStateType::Backstep; }
+
 	UFUNCTION(BlueprintPure)
 		FORCEINLINE bool IsEquipMode() { return Type == EStateType::Equip; }
 	UFUNCTION(BlueprintPure)
@@ -51,21 +51,21 @@ public:
 	UFUNCTION(BlueprintPure)
 		FORCEINLINE bool IsDeadMode() { return Type == EStateType::Dead; }
 
-public:
+public :
 	UPROPERTY(BlueprintAssignable)
-		FStateTypeChanged OnStateTypeChanged;
+		FStateTypeChanged OnStateTypeChanged; 
 
-private:
-	void ChangeType(EStateType InType);
+private :
+	void ChangeType(EStateType InType); 
 
-public:
-	void SetIdleMode();
-	void SetRollMode();
-	void SetBackstepMode();
+public :
+	void SetIdleMode(); 
+	void SetRollMode(); 
+	void SetBackstepMode(); 
 
-	void SetEquipMode();
+	void SetEquipMode(); 
 	void SetActionMode();
 	void SetHittedMode();
-	void SetDeadMode();
+	void SetDeadMode(); 
 
 };

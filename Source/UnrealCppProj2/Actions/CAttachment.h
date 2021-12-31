@@ -4,17 +4,21 @@
 #include "GameFramework/Actor.h"
 #include "CAttachment.generated.h"
 
-DECLARE_DYNAMIC_MULTICAST_DELEGATE_ThreeParams(FAttachmentBeginOverlap,
-												class ACharacter*, InAttacker,
-												class AActor*, InAttackCauser,
-												class ACharacter*, InOtherCharacter);
+DECLARE_DYNAMIC_MULTICAST_DELEGATE_ThreeParams(
+							FAttachmentBeginOverlap , 
+							class ACharacter* , InAttacker, 
+							class AActor* , InAttackCauser,
+							class ACharacter* , InOtherCharacter); 
 
-DECLARE_DYNAMIC_MULTICAST_DELEGATE_ThreeParams(FAttachmentEndOverlap,
-												class ACharacter*, InAttacker,
-												class AActor*, InAttackCauser,
-												class ACharacter*, InOtherCharacter);
+DECLARE_DYNAMIC_MULTICAST_DELEGATE_ThreeParams(
+							FAttachmentEndOverlap,
+							class ACharacter*, InAttacker,
+							class AActor*, InAttackCauser,
+							class ACharacter*, InOtherCharacter);
 
 DECLARE_DYNAMIC_MULTICAST_DELEGATE(FAttachmentCollision);
+
+
 
 UCLASS()
 class UNREALCPPPROJ2_API ACAttachment : public AActor
@@ -27,10 +31,9 @@ public:
 protected:
 	virtual void BeginPlay() override;
 
-public:
+public :
 	UFUNCTION(BlueprintImplementableEvent)
-		void OnEquip();
-
+		void OnEquip(); 
 	UFUNCTION(BlueprintImplementableEvent)
 		void OnUnequip();
 
@@ -44,47 +47,44 @@ protected:
 	UPROPERTY(BlueprintReadOnly)
 		class UCStatusComponent* Status;
 
-protected:
+protected :
 	UFUNCTION(BlueprintCallable)
-		void AttachTo(FName InSocketName);
+		void AttachTo(FName InSocketName); 
 
 	UFUNCTION(BlueprintCallable)
 		void AttachToCollision(class UShapeComponent* InComponent, FName InSocketName);
 
 	UPROPERTY(BlueprintReadOnly, VisibleDefaultsOnly)
-		class USceneComponent* Scene;
+		class USceneComponent* Scene; 
 
-public:
+public :
 	UPROPERTY(BlueprintAssignable)
-		FAttachmentBeginOverlap OnAttachmentBeginOverlap;
-
+		FAttachmentBeginOverlap		OnAttachmentBeginOverlap; 
 	UPROPERTY(BlueprintAssignable)
-		FAttachmentEndOverlap OnAttachmentEndOverlap;
-
+		FAttachmentEndOverlap		OnAttachmentEndOverlap;
 	UPROPERTY(BlueprintAssignable)
-		FAttachmentCollision OnAttachmentCollision;
-
+		FAttachmentCollision		OnAttachmentCollision; 
 	UPROPERTY(BlueprintAssignable)
-		FAttachmentCollision OffAttachmentCollision;
+		FAttachmentCollision		OffAttachmentCollision;
 
-private:
-	TArray<class UShapeComponent*> ShapeComponents;
+
+private :
+	TArray<class UShapeComponent*> ShapeComponents; 
 
 	UFUNCTION()
 		void OnComponentBeginOverlap(UPrimitiveComponent* OverlappedComponent, 
-										AActor* OtherActor, 
-										UPrimitiveComponent* OtherComp,
-										int32 OtherBodyIndex,
-										bool bFromSweep,
-										const FHitResult & SweepResult);
-	UFUNCTION()
-		void OnComponentEndOverlap(UPrimitiveComponent* OverlappedComponent, 
 									AActor* OtherActor, 
-									UPrimitiveComponent* OtherComp,
-									int32 OtherBodyIndex);
+									UPrimitiveComponent* OtherComp, 
+									int32 OtherBodyIndex, 
+									bool bFromSweep, 
+									const FHitResult& SweepResult);
+	UFUNCTION()
+		void OnComponentEndOverlap(	UPrimitiveComponent* OverlappedComponent, 
+								AActor* OtherActor, 
+								UPrimitiveComponent* OtherComp, 
+								int32 OtherBodyIndex);
 
-public:
-	//충돌체 활성/비활성
-	void OnCollision();
-	void OffCollision();
+public :
+	void OnCollision(); 
+	void OffCollision(); 
 };

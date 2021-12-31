@@ -1,3 +1,5 @@
+// Fill out your copyright notice in the Description page of Project Settings.
+
 #pragma once
 
 #include "CoreMinimal.h"
@@ -9,26 +11,23 @@ UCLASS()
 class UNREALCPPPROJ2_API UCAnimInstance : public UAnimInstance
 {
 	GENERATED_BODY()
-
-protected:
+	
+protected :
 	UPROPERTY(BlueprintReadOnly, EditAnywhere)
-		float Speed;
-
-	UPROPERTY(BlueprintReadOnly, EditAnywhere)
-		float Direction;
+		float Speed; 
 
 	UPROPERTY(BlueprintReadOnly, EditAnywhere)
-		EActionType ActionType;
+		float Direction; 
 
+	UPROPERTY(BlueprintReadOnly, EditAnywhere)
+		EActionType ActionType; 
 
-public:
-	virtual void NativeBeginPlay() override;
-	virtual void NativeUpdateAnimation(float DeltaSeconds) override;
+public :
+	virtual void NativeBeginPlay() override; 
+	virtual void NativeUpdateAnimation(float DeltaSeconds) override; 
 
-private:
+private :
 	UFUNCTION()
 		void OnActionTypeChanged(EActionType InPrevType, EActionType InNewType);
 
 };
-
-

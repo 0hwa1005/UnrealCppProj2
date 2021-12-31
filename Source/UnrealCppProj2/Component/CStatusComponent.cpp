@@ -1,9 +1,9 @@
 #include "CStatusComponent.h"
 #include "Global.h"
 
+
 UCStatusComponent::UCStatusComponent()
 {
-	
 }
 
 
@@ -11,23 +11,26 @@ void UCStatusComponent::BeginPlay()
 {
 	Super::BeginPlay();
 
-	Health = MaxHealth;
+	// ...
+
+	Health = MaxHealth; 
+	
 }
 
 void UCStatusComponent::SetMove()
 {
-	bCanMove = true;
+	bCanMove = true; 
 }
 
 void UCStatusComponent::SetStop()
 {
-	bCanMove = false;
+	bCanMove = false; 
 }
 
 void UCStatusComponent::AddHealth(float InAmount)
 {
-	Health += InAmount;
-	Health = FMath::Clamp(Health, 0.0f, MaxHealth);
+	Health += InAmount; 
+	Health = FMath::Clamp(Health, 0.0f, MaxHealth); 
 }
 
 void UCStatusComponent::SubHealth(float InAmount)
@@ -35,5 +38,3 @@ void UCStatusComponent::SubHealth(float InAmount)
 	Health -= InAmount;
 	Health = FMath::Clamp(Health, 0.0f, MaxHealth);
 }
-
-

@@ -5,6 +5,7 @@
 #include "Actions/CDoAction.h"
 #include "Component/CActionComponent.h"
 
+
 FString UCAnimNotify_EndAction::GetNotifyName_Implementation() const
 {
 	return "EndAction";
@@ -18,12 +19,10 @@ void UCAnimNotify_EndAction::Notify(USkeletalMeshComponent* MeshComp, UAnimSeque
 	CheckNull(MeshComp->GetOwner());
 
 	UCActionComponent* action = CHelpers::GetComponent<UCActionComponent>
-		(MeshComp->GetOwner());
-
-	CheckNull(action);
-	CheckNull(action->GetCurrent());
-	CheckNull(action->GetCurrent()->GetDoAction());
+		(MeshComp->GetOwner()); 
+	CheckNull(action); 
+	CheckNull(action->GetCurrent()); 
+	CheckNull(action->GetCurrent()->GetDoAction()); 
 
 	action->GetCurrent()->GetDoAction()->End_DoAction();
-
 }

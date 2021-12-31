@@ -6,7 +6,6 @@
 
 ACDoAction::ACDoAction()
 {
- 	// Set this actor to call Tick() every frame.  You can turn this off to improve performance if you don't need it.
 	PrimaryActorTick.bCanEverTick = true;
 
 }
@@ -17,8 +16,10 @@ void ACDoAction::BeginPlay()
 	State = CHelpers::GetComponent<UCStateComponent>(OwnerCharacter);
 	Status = CHelpers::GetComponent<UCStatusComponent>(OwnerCharacter);
 
-	
+
+
 	Super::BeginPlay();
+
 }
 
 void ACDoAction::Tick(float DeltaTime)

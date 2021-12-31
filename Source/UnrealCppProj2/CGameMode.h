@@ -1,3 +1,5 @@
+// Copyright Epic Games, Inc. All Rights Reserved.
+
 #pragma once
 
 #include "CoreMinimal.h"
@@ -9,6 +11,6 @@ class UNREALCPPPROJ2_API ACGameMode : public AGameModeBase
 {
 	GENERATED_BODY()
 	
-public:
-	ACGameMode();
+public :
+	ACGameMode();	// << : 
 };

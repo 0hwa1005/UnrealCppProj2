@@ -6,10 +6,10 @@
 #include "Components/SkeletalMeshComponent.h"
 #include "Components/InputComponent.h"
 #include "Component/COptionComponent.h"
-#include "Component/CStatusComponent.h"
+#include "Component/CStatusComponent.h"	// << : 
 #include "Component/CMontagesComponent.h"
-#include "Component/CActionComponent.h"
-#include "Component/CTargetComponent.h"
+#include "Component/CActionComponent.h"	
+#include "Component/CTargetComponent2.h"
 #include "Materials/MaterialInstanceConstant.h"
 #include "Materials/MaterialInstanceDynamic.h"
 
@@ -17,58 +17,62 @@ ACPlayer::ACPlayer()
 {
 	PrimaryActorTick.bCanEverTick = true;
 
-	CHelpers::CreateComponent<USpringArmComponent>(this, &SpringArm, "SpringArm ", GetMesh());
-	CHelpers::CreateComponent<UCameraComponent>(this, &Camera, "Camera", SpringArm);
-	CHelpers::CreateActorComponent<UCOptionComponent>(this, &Option, "Option");
-	CHelpers::CreateActorComponent<UCStatusComponent>(this, &Status, "Status");
+	CHelpers::CreateComponent<USpringArmComponent>(this, &SpringArm, "SpringArm ", GetMesh()); 
+	CHelpers::CreateComponent<UCameraComponent>(this, &Camera, "Camera", SpringArm); 
+	CHelpers::CreateActorComponent<UCOptionComponent>(this, &Option, "Option"); 
+	CHelpers::CreateActorComponent<UCStatusComponent>(this, &Status, "Status"); 
 	CHelpers::CreateActorComponent<UCStateComponent>(this, &State, "State");
 	CHelpers::CreateActorComponent<UCMontagesComponent>(this, &Montages, "Montages");
 	CHelpers::CreateActorComponent<UCActionComponent>(this, &Action, "Action");
-	CHelpers::CreateActorComponent<UCTargetComponent>(this, &Target, "Target");
+	CHelpers::CreateActorComponent<UCTargetComponent2>(this, &Target, "Target");
 
-	bUseControllerRotationYaw = false;
+	bUseControllerRotationYaw = false; 
 
-	GetMesh()->SetRelativeLocation(FVector(0, 0, -90));
-	GetMesh()->SetRelativeRotationExact(FRotator(0, -90, 0));
+	GetMesh()->SetRelativeLocation(FVector(0, 0, -90)); 
+	GetMesh()->SetRelativeRotation(FRotator(0, -90, 0)); 
 
-	USkeletalMesh* mesh;
-	CHelpers::GetAsset<USkeletalMesh>(&mesh, "SkeletalMesh'/Game/Character/Mesh/SK_Mannequin.SK_Mannequin'");
-	GetMesh()->SetSkeletalMesh(mesh);
+	USkeletalMesh* mesh; 
+	CHelpers::GetAsset<USkeletalMesh>(&mesh, 
+		"SkeletalMesh'/Game/Character/Mesh/SK_Mannequin.SK_Mannequin'"); 
+	GetMesh()->SetSkeletalMesh(mesh); 
 
-	TSubclassOf<UAnimInstance> animInstance;
-	CHelpers::GetClass<UAnimInstance>(&animInstance, "AnimBlueprint'/Game/Player/ABP_CPlayer.ABP_CPlayer_C'");
-	GetMesh()->SetAnimInstanceClass(animInstance);
+	TSubclassOf<UAnimInstance> animInstance; 
+	CHelpers::GetClass<UAnimInstance>(&animInstance, "AnimBlueprint'/Game/Player/ABP_CPlayer.ABP_CPlayer_C'"); 
+	GetMesh()->SetAnimInstanceClass(animInstance); 
 
-	SpringArm->TargetArmLength = 400.0;
-	SpringArm->bDoCollisionTest = false;
-	SpringArm->bUsePawnControlRotation = true;
-	SpringArm->bEnableCameraLag = true;
+	SpringArm->TargetArmLength = 400.0f; 
+	SpringArm->bDoCollisionTest = false; 
+	SpringArm->bUsePawnControlRotation = true; 
+	SpringArm->bEnableCameraLag = true; 
 
-	GetCharacterMovement()->RotationRate = FRotator(0, 720, 0);
-	GetCharacterMovement()->bOrientRotationToMovement = true;
+	GetCharacterMovement()->RotationRate = FRotator(0, 720, 0); 
+	GetCharacterMovement()->bOrientRotationToMovement = true; 
+
 }
 
 void ACPlayer::BeginPlay()
 {
 	Super::BeginPlay();
+	
+	State->OnStateTypeChanged.AddDynamic(this, &ACPlayer::OnStateTypeChanged); 
 
-	State->OnStateTypeChanged.AddDynamic(this, &ACPlayer::OnStateTypeChanged);
-
-	UMaterialInstanceConstant* body;
+	// >> : 
+	UMaterialInstanceConstant* body; 
 	UMaterialInstanceConstant* logo;
 
 	CHelpers::GetAssetDynamic<UMaterialInstanceConstant>(&body,
-		"MaterialInstanceConstant'/Game/Materials/M_UE4Man_Body_Inst.M_UE4Man_Body_Inst'");
+		"MaterialInstanceConstant'/Game/Materials/M_UE4Man_Body_Inst.M_UE4Man_Body_Inst'"); 
 	CHelpers::GetAssetDynamic<UMaterialInstanceConstant>(&logo,
 		"MaterialInstanceConstant'/Game/Materials/M_UE4Man_ChestLogo_Inst.M_UE4Man_ChestLogo_Inst'");
 
-	BodyMaterial = UMaterialInstanceDynamic::Create(body, this);
+	BodyMaterial = UMaterialInstanceDynamic::Create(body, this); 
 	LogoMaterial = UMaterialInstanceDynamic::Create(logo, this);
 
-	GetMesh()->SetMaterial(0, BodyMaterial);
+	GetMesh()->SetMaterial(0, BodyMaterial); 
 	GetMesh()->SetMaterial(1, LogoMaterial);
 
-	Action->SetUnarmedMode();
+	Action->SetUnarmedMode(); 
+	// << : 
 }
 
 void ACPlayer::Tick(float DeltaTime)
@@ -77,69 +81,88 @@ void ACPlayer::Tick(float DeltaTime)
 
 }
 
+// Called to bind functionality to input
 void ACPlayer::SetupPlayerInputComponent(UInputComponent* PlayerInputComponent)
 {
 	Super::SetupPlayerInputComponent(PlayerInputComponent);
 
-	PlayerInputComponent->BindAxis("MoveForward", this, &ACPlayer::OnMoveForward);
+	PlayerInputComponent->BindAxis("MoveForward", this, &ACPlayer::OnMoveForward); 
 	PlayerInputComponent->BindAxis("MoveRight", this, &ACPlayer::OnMoveRight);
 	PlayerInputComponent->BindAxis("HorizontalLook", this, &ACPlayer::OnHorizontalLook);
 	PlayerInputComponent->BindAxis("VerticalLook", this, &ACPlayer::OnVerticalLook);
 
-	PlayerInputComponent->BindAction("Avoid", EInputEvent::IE_Pressed, this, &ACPlayer::OnAvoid);
+	PlayerInputComponent->BindAction("Avoid", EInputEvent::IE_Pressed,
+		this, &ACPlayer::OnAvoid);
 
-	PlayerInputComponent->BindAction("Fist", EInputEvent::IE_Pressed, this, &ACPlayer::OnFist);
-	PlayerInputComponent->BindAction("OneHand", EInputEvent::IE_Pressed, this, &ACPlayer::OnOneHand);
-	PlayerInputComponent->BindAction("TwoHand", EInputEvent::IE_Pressed, this, &ACPlayer::OnTwoHand);
+	PlayerInputComponent->BindAction("Fist", EInputEvent::IE_Pressed,
+		this, &ACPlayer::OnFist);
 
-	PlayerInputComponent->BindAction("Warp", EInputEvent::IE_Pressed, this, &ACPlayer::OnWarp);
-	PlayerInputComponent->BindAction("FireStorm", EInputEvent::IE_Pressed, this, &ACPlayer::OnFireStorm);
-	PlayerInputComponent->BindAction("IceBall", EInputEvent::IE_Pressed, this, &ACPlayer::OnIceBall);
 
-	PlayerInputComponent->BindAction("Target", EInputEvent::IE_Pressed, this, &ACPlayer::OnTarget);
-	PlayerInputComponent->BindAction("TargetLeft", EInputEvent::IE_Pressed, this, &ACPlayer::OnTargetLeft);
-	PlayerInputComponent->BindAction("TargetRight", EInputEvent::IE_Pressed, this, &ACPlayer::OnTargetRight);
+	PlayerInputComponent->BindAction("OneHand", EInputEvent::IE_Pressed,
+		this, &ACPlayer::OnOneHand);
 
-	PlayerInputComponent->BindAction("Action", EInputEvent::IE_Pressed, this, &ACPlayer::OnDoAction);
+	PlayerInputComponent->BindAction("TwoHand", EInputEvent::IE_Pressed,
+		this, &ACPlayer::OnTwoHand);
 
-	PlayerInputComponent->BindAction("Aim", EInputEvent::IE_Pressed, this, &ACPlayer::OnAim);
-	PlayerInputComponent->BindAction("Aim", EInputEvent::IE_Released, this, &ACPlayer::OffAim);
+	PlayerInputComponent->BindAction("Warp", EInputEvent::IE_Pressed,
+		this, &ACPlayer::OnWarp);
+
+	PlayerInputComponent->BindAction("FireStorm", EInputEvent::IE_Pressed,
+		this, &ACPlayer::OnFireStorm);
+
+	PlayerInputComponent->BindAction("IceBall", EInputEvent::IE_Pressed,
+		this, &ACPlayer::OnIceBall);
+
+	PlayerInputComponent->BindAction("Target", EInputEvent::IE_Pressed,
+		this, &ACPlayer::OnTarget);
+
+	PlayerInputComponent->BindAction("TargetLeft", EInputEvent::IE_Pressed,
+		this, &ACPlayer::OnTargetLeft);
+	PlayerInputComponent->BindAction("TargetRight", EInputEvent::IE_Pressed,
+		this, &ACPlayer::OnTargetRight);
+
+	PlayerInputComponent->BindAction("Action", EInputEvent::IE_Pressed,
+		this, &ACPlayer::OnDoAction);
+
+	PlayerInputComponent->BindAction("Aim", EInputEvent::IE_Pressed,
+		this, &ACPlayer::OnAim);
+	PlayerInputComponent->BindAction("Aim", EInputEvent::IE_Released,
+		this, &ACPlayer::OffAim);
 
 }
+
 
 void ACPlayer::OnStateTypeChanged(EStateType InPrevType, EStateType InNewType)
 {
 	switch (InNewType)
 	{
-	case EStateType::Roll:		Begin_Roll();		break;
-	case EStateType::Backstep:	Begin_Backstep();	 break;
+	case EStateType::Roll:		Begin_Roll();  break;
+	case EStateType::Backstep:	Begin_Backstep();  break;
 	}
 }
 
 void ACPlayer::OnMoveForward(float InAxis)
 {
-	CheckFalse(Status->CanMove());
+	CheckFalse(Status->CanMove()); 
 
-	FRotator rotator = FRotator(0, GetControlRotation().Yaw, 0);
-	FVector direction = FQuat(rotator).GetForwardVector();
-	AddMovementInput(direction, InAxis);
+	FRotator rotator = FRotator(0, GetControlRotation().Yaw, 0); 
+	FVector direction = FQuat(rotator).GetForwardVector(); 
+	AddMovementInput(direction, InAxis); 
 }
-
 void ACPlayer::OnMoveRight(float InAxis)
 {
 	CheckFalse(Status->CanMove());
 
 	FRotator rotator = FRotator(0, GetControlRotation().Yaw, 0);
-	FVector direction = FQuat(rotator).GetRightVector();
+	FVector direction = FQuat(rotator).GetRightVector(); 
 	AddMovementInput(direction, InAxis);
 }
 
 void ACPlayer::OnHorizontalLook(float InAxis)
 {
-	float rate = Option->GetHorizontalLookRate();
-	AddControllerYawInput(InAxis * rate * GetWorld()->GetDeltaSeconds());
+	float rate = Option->GetHorizontalLookRate(); 
+	AddControllerYawInput(InAxis * rate * GetWorld()->GetDeltaSeconds()); 
 }
-
 void ACPlayer::OnVerticalLook(float InAxis)
 {
 	float rate = Option->GetVerticalLookRate();
@@ -149,46 +172,47 @@ void ACPlayer::OnVerticalLook(float InAxis)
 void ACPlayer::OnAvoid()
 {
 	CheckFalse(Status->CanMove());
-	CheckFalse(State->IsIdleMode());
+	CheckFalse(State->IsIdleMode()); 
 
 	if (InputComponent->GetAxisValue("MoveForward") < 0.0f)
 	{
 		State->SetBackstepMode();
-		return;
+		return; 
 	}
 
-	State->SetRollMode();
+	State->SetRollMode(); 
+
 }
 
 void ACPlayer::Begin_Roll()
 {
-	bUseControllerRotationYaw = false;
-	GetCharacterMovement()->bOrientRotationToMovement = true;
+	bUseControllerRotationYaw = false; 
+	GetCharacterMovement()->bOrientRotationToMovement = true; 
 
-	FVector start = GetActorLocation();
-	FVector dest = start + GetVelocity().GetSafeNormal2D();
-	SetActorRotation(UKismetMathLibrary::FindLookAtRotation(start, dest));
+	FVector start = GetActorLocation(); 
+	FVector dest = start + GetVelocity().GetSafeNormal2D(); 
+	SetActorRotation(UKismetMathLibrary::FindLookAtRotation(start, dest)); 
 
-	Montages->PlayRoll();
+	Montages->PlayRoll(); 
 }
 
 void ACPlayer::Begin_Backstep()
 {
-	bUseControllerRotationYaw = true;
-	GetCharacterMovement()->bOrientRotationToMovement = false;
-	
-
-	Montages->PlayBackStep();
+	bUseControllerRotationYaw = true; 
+	GetCharacterMovement()->bOrientRotationToMovement = false ;
+	CLog::Log(">>>>>>>>>>>>>>>>>>>>>>>>>   ACPlayer::Begin_Backstep()"); 
+	Montages->PlayBackstep(); 
 }
 
 void ACPlayer::End_Roll()
 {
 	if (Action->IsUnarmedMode() == false)
 	{
-		bUseControllerRotationYaw = true;
-		GetCharacterMovement()->bOrientRotationToMovement = false;
+		bUseControllerRotationYaw = true; 
+		GetCharacterMovement()->bOrientRotationToMovement = false; 
 	}
-	State->SetIdleMode();
+
+	State->SetIdleMode(); 
 }
 
 void ACPlayer::End_Backstep()
@@ -198,19 +222,20 @@ void ACPlayer::End_Backstep()
 		bUseControllerRotationYaw = false;
 		GetCharacterMovement()->bOrientRotationToMovement = true;
 	}
-	State->SetIdleMode();
+
+	State->SetIdleMode(); 
 }
 
 void ACPlayer::OnFist()
 {
 	CheckFalse(State->IsIdleMode());
-	Action->SetFistMode();
+	Action->SetFistMode(); 
 }
 
 void ACPlayer::OnOneHand()
 {
-	CheckFalse(State->IsIdleMode());
-	Action->SetOneHandMode();
+	CheckFalse(State->IsIdleMode()); 
+	Action->SetOneHandMode(); 
 }
 
 void ACPlayer::OnTwoHand()
@@ -221,8 +246,8 @@ void ACPlayer::OnTwoHand()
 
 void ACPlayer::OnWarp()
 {
-	CheckFalse(State->IsIdleMode());
-	Action->SetWarpMode();
+	CheckFalse(State->IsIdleMode()); 
+	Action->SetWarpMode(); 
 }
 
 void ACPlayer::OnFireStorm()
@@ -239,22 +264,22 @@ void ACPlayer::OnIceBall()
 
 void ACPlayer::OnTarget()
 {
-	Target->ToggleTarget();
+	Target->ToggleTarget(); 
 }
 
 void ACPlayer::OnTargetLeft()
 {
-	Target->ChangeTargetLeft();
+	Target->ChangeTargetLeft(); 
 }
 
 void ACPlayer::OnTargetRight()
 {
-	Target->ChangeTargetRight();
+	Target->ChangeTargetRight(); 
 }
 
 void ACPlayer::OnAim()
 {
-	Action->DoAim(true);
+	Action->DoAim(true); 
 }
 
 void ACPlayer::OffAim()
@@ -264,12 +289,12 @@ void ACPlayer::OffAim()
 
 void ACPlayer::OnDoAction()
 {
-	Action->DoAction();
+	Action->DoAction(); 
 }
 
 void ACPlayer::ChangeColor(FLinearColor InColor)
 {
-	BodyMaterial->SetVectorParameterValue("BodyColor", InColor);
-	LogoMaterial->SetVectorParameterValue("BodyColor", InColor);//Logo에도 Body로 되어있어서 BodyColor씀
+	BodyMaterial->SetVectorParameterValue("BodyColor", InColor); 
+	LogoMaterial->SetVectorParameterValue("BodyColor", InColor); 
 }
 

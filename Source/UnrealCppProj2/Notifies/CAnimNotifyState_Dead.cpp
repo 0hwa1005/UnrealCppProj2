@@ -7,20 +7,19 @@ FString UCAnimNotifyState_Dead::GetNotifyName_Implementation() const
 	return "Dead";
 }
 
-void UCAnimNotifyState_Dead::NotifyBegin(USkeletalMeshComponent * MeshComp, UAnimSequenceBase * Animation, float TotalDuration)
+void UCAnimNotifyState_Dead::NotifyBegin(USkeletalMeshComponent* MeshComp, UAnimSequenceBase* Animation, float TotalDuration)
 {
 	Super::NotifyBegin(MeshComp, Animation, TotalDuration);
-
 	CheckNull(MeshComp);
 	CheckNull(MeshComp->GetOwner());
 
-	IICharacter* character = Cast<IICharacter>(MeshComp->GetOwner());
-	CheckNull(character);
+	IICharacter* character = Cast<IICharacter>(MeshComp->GetOwner()); 
+	CheckNull(character); 
 
-	character->Begin_Dead();
+	character->Begin_Dead(); 	
 }
 
-void UCAnimNotifyState_Dead::NotifyEnd(USkeletalMeshComponent * MeshComp, UAnimSequenceBase * Animation)
+void UCAnimNotifyState_Dead::NotifyEnd(USkeletalMeshComponent* MeshComp, UAnimSequenceBase* Animation)
 {
 	Super::NotifyEnd(MeshComp, Animation);
 	CheckNull(MeshComp);
@@ -29,5 +28,5 @@ void UCAnimNotifyState_Dead::NotifyEnd(USkeletalMeshComponent * MeshComp, UAnimS
 	IICharacter* character = Cast<IICharacter>(MeshComp->GetOwner());
 	CheckNull(character);
 
-	character->End_Dead();
+	character->End_Dead(); 
 }

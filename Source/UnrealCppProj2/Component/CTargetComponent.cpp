@@ -2,69 +2,70 @@
 #include "GameFramework/Character.h"
 #include "Global.h"
 #include "Particles/ParticleSystem.h"
-#include "particles/ParticleSystemComponent.h"
+#include "Particles/ParticleSystemComponent.h"
 #include "Component/CStateComponent.h"
+
 
 UCTargetComponent::UCTargetComponent()
 {
 	PrimaryComponentTick.bCanEverTick = true;
 
-	CHelpers::GetAsset<UParticleSystem>(&Particle, "ParticleSystem'/Game/Effects/P_Enrage_Base.P_Enrage_Base'");
-
+	CHelpers::GetAsset<UParticleSystem>(&Particle, "ParticleSystem'/Game/Effects/P_Enrage_Base.P_Enrage_Base'"); 
 }
 
 void UCTargetComponent::BeginPlay()
 {
 	Super::BeginPlay();
-	OwnerCharacter = Cast<ACharacter>(GetOwner());
+	OwnerCharacter = Cast<ACharacter>(GetOwner()); 
 }
+
 
 void UCTargetComponent::TickComponent(float DeltaTime, ELevelTick TickType, FActorComponentTickFunction* ThisTickFunction)
 {
 	Super::TickComponent(DeltaTime, TickType, ThisTickFunction);
 
-	CheckNull(Target);
+	CheckNull(Target); 
 
-	UCStateComponent* state = CHelpers::GetComponent<UCStateComponent>(Target);
+	UCStateComponent* state = CHelpers::GetComponent<UCStateComponent>(Target); 
 
-	bool b = false;
-	b |= state->IsDeadMode();
-	b |= Target->GetDistanceTo(OwnerCharacter) >= TraceRadius;
+	bool b = false; 
+	b |= state->IsDeadMode(); 
+	b |= Target->GetDistanceTo(OwnerCharacter) >= TraceRadius; 
 
 	if (b == true)
 	{
-		EndTargeting();
-		return;
+		EndTargeting(); 
+		return; 
 	}
 
-	FVector start = OwnerCharacter->GetActorLocation();
-	FVector target = Target->GetActorLocation();
 
-	FRotator rotator = UKismetMathLibrary::FindLookAtRotation(start, target);
+	FVector start = OwnerCharacter->GetActorLocation(); 
+	FVector target = Target->GetActorLocation(); 
 
-	FRotator current = OwnerCharacter->GetControlRotation();
-	rotator = UKismetMathLibrary::RInterpTo(current, rotator, DeltaTime, InteropSpeed);
+	FRotator rotator = UKismetMathLibrary::FindLookAtRotation(start, target); 
 
-	OwnerCharacter->GetController()->SetControlRotation(rotator);
-
+	FRotator current = OwnerCharacter->GetControlRotation(); 
+	rotator = UKismetMathLibrary::RInterpTo(current, rotator, DeltaTime, InteropSpeed); 
+	OwnerCharacter->GetController()->SetControlRotation(rotator); 
 }
 
 void UCTargetComponent::StartTargeting()
 {
-	SetTraceTargets();
-	SetTarget();
+	SetTraceTargets(); 
+	SetTarget(); 
 }
 
 void UCTargetComponent::EndTargeting()
 {
-	Target = NULL;
-	TraceTargets.Empty();
+	Target = NULL; 
+	TraceTargets.Empty(); 
 	if (!!Attached)
-		Attached->DestroyComponent();
+		Attached->DestroyComponent(); 
 }
 
 void UCTargetComponent::SetTraceTargets()
 {
+
 	FVector start = OwnerCharacter->GetActorLocation();
 	FVector end = FVector(start.X, start.Y, start.Z + 1);
 
@@ -72,8 +73,8 @@ void UCTargetComponent::SetTraceTargets()
 	ignoreActors.Add(OwnerCharacter);
 
 	TArray<FHitResult> hitResults;
-	UKismetSystemLibrary::SphereTraceMultiByProfile(GetWorld(), start, end, TraceRadius,
-		"Pawn", false, ignoreActors, Debug, hitResults, true,
+	UKismetSystemLibrary::SphereTraceMultiByProfile(GetWorld(), start, end,
+		TraceRadius, "Pawn", false, ignoreActors, Debug, hitResults, true,
 		FLinearColor::Green, FLinearColor::Red, 1.0f);
 
 	for (const FHitResult& result : hitResults)
@@ -86,121 +87,124 @@ void UCTargetComponent::SetTraceTargets()
 			TraceTargets.AddUnique(character);
 	}
 
-	//목록 출력
+
 	//for (const ACharacter* character : TraceTargets)
 	//{
-	//	CLog::Print(character->GetName());
-	//	CLog::Log(character->GetName());
+	//	CLog::Print(character->GetName()); 
+	//	CLog::Log(character->GetName()); 
 	//}
-
 }
 
 void UCTargetComponent::SetTarget()
 {
-	float angle = -2.0f;
-	ACharacter* target = NULL;
+	float angle = -2.0f; 
+	ACharacter* target = NULL; 
 
 	for (ACharacter* character : TraceTargets)
 	{
-		FVector direction = FQuat(OwnerCharacter->GetControlRotation()).GetForwardVector();
-		FVector offset = character->GetActorLocation()-OwnerCharacter->GetActorLocation();
-		offset = offset.GetSafeNormal();
+		FVector direction = FQuat(OwnerCharacter->GetControlRotation()).GetForwardVector(); 
+		FVector offset = character->GetActorLocation() - OwnerCharacter->GetActorLocation(); 
+		offset = offset.GetSafeNormal(); 
 
-		float temp = direction | offset;//dot product
+		float temp = direction | offset; // : dot product 
 		if (temp < angle)
-			continue;
-
-		angle = temp;
+			continue; 
+		
+		angle = temp; 
 		target = character;
-	}
+	}	
 
-	/*CLog::Print(target->GetName());
-	CLog::Log(target->GetActorLabel());*/
-	ChangeCursor(target);
+	//CLog::Print(target->GetName());
+	//CLog::Log(target->GetActorLabel());
+	ChangeCursor(target); 
 }
 
-void UCTargetComponent::ChangeCursor(ACharacter * InTarget)
+void UCTargetComponent::ChangeCursor(ACharacter* InTarget)
 {
 	if (!!InTarget)
 	{
 		if (!!Attached)
-			Attached->DestroyComponent();
+			Attached->DestroyComponent(); 
 
-		Attached = UGameplayStatics::SpawnEmitterAttached(Particle, InTarget->GetMesh(), "Spine_Target");
-		Target = InTarget;
-		return;
+		Attached = UGameplayStatics::SpawnEmitterAttached(Particle, InTarget->GetMesh(), "Spine_Target"); 
+		Target = InTarget; 
+		return; 
 	}
-	EndTargeting();
+
+	EndTargeting(); 
 }
 
 void UCTargetComponent::ChangeTarget(bool InRight)
 {
-	CheckNull(Target);
-	TMap<float, ACharacter*> map;
+	CheckNull(Target); 
+	TMap<float, ACharacter*> map; 
 	for (ACharacter* character : TraceTargets)
 	{
 		if (Target == character)
-			continue;
+			continue; 
 
-		FVector targetLocation = character->GetActorLocation();
-		FVector ownerLocation = OwnerCharacter->GetActorLocation();
+		FVector targetLocation = character->GetActorLocation(); 
+		FVector ownerLocation = OwnerCharacter->GetActorLocation(); 
 		FVector ownerToTarget = targetLocation - ownerLocation;
 
-		FQuat quat = FQuat(OwnerCharacter->GetControlRotation());
-		FVector forward = quat.GetForwardVector();
-		FVector up = quat.GetUpVector();
+		FQuat quat = FQuat(OwnerCharacter->GetControlRotation()); 
+		FVector forward = quat.GetForwardVector(); 
+		FVector up = quat.GetUpVector(); 
 
-		FVector cross = forward ^ ownerToTarget;// ^ : cross product
-		float dot = cross | up;
+		FVector cross = forward ^ ownerToTarget; // ^ cross product
+		float dot = cross | up; 
 
-		map.Add(dot, character);
+		map.Add(dot, character); //
 	}
 
-	float minimum = FLT_MAX;
-	ACharacter* target = NULL;
+	float minimum = FLT_MAX; 
+	ACharacter* target = NULL; 
 
-	TArray<float> keys;
-	map.GetKeys(keys);
+	TArray<float> keys; 
+	map.GetKeys(keys); 
 
 	for (float key : keys)
 	{
 		if (InRight == true)
 		{
 			if (key < 0.0f)
-				continue;
+				continue; 
 		}
 		else
 		{
 			if (key > 0.0f)
-				continue;
+				continue; 
 		}
 
 		if (FMath::Abs(key) > minimum)
-			continue;
+			continue; 
 
-		minimum = FMath::Abs(key);
-		target = *map.Find(key);
+		minimum = FMath::Abs(key); 
+		target = *map.Find(key); 
 	}
-	ChangeCursor(target);
+
+	ChangeCursor(target); 
+
 }
 
 void UCTargetComponent::ToggleTarget()
 {
 	if (!!Target)
 	{
-		EndTargeting();
-		return;
+		EndTargeting(); 
+		return; 
 	}
-	StartTargeting();
+
+	StartTargeting(); 
 }
 
 void UCTargetComponent::ChangeTargetLeft()
 {
-	ChangeTarget(false);
+	ChangeTarget(false); 
 }
 
 void UCTargetComponent::ChangeTargetRight()
 {
-	ChangeTarget(true);
+	ChangeTarget(true); 
 }
 

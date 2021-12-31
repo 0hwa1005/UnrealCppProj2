@@ -15,8 +15,8 @@ void ACDoAction_FireStorm::BeginPlay()
 	{
 		if (actor->IsA<ACAttachment>() && actor->GetActorLabel().Contains("FireStorm"))
 		{
-			Box = CHelpers::GetComponent<UBoxComponent>(actor);
-			break;
+			Box = CHelpers::GetComponent<UBoxComponent>(actor); 
+			break; 
 		}
 	}
 }
@@ -24,25 +24,25 @@ void ACDoAction_FireStorm::BeginPlay()
 void ACDoAction_FireStorm::Finish()
 {
 	State->SetIdleMode();
-	Attached->DestroyComponent();
-	UKismetSystemLibrary::K2_ClearTimer(this, "Hitted");
+	Attached->DestroyComponent(); 
+	UKismetSystemLibrary::K2_ClearTimer(this, "Hitted"); 
 }
 
 void ACDoAction_FireStorm::Hitted()
 {
-	FDamageEvent e;
+	FDamageEvent e; 
 	for (ACharacter* character : HittedCharacter)
-		character->TakeDamage(Datas[0].Power, e, OwnerCharacter->GetController(), this);
+		character->TakeDamage(Datas[0].Power, e, OwnerCharacter->GetController(), this); 
 }
 
-void ACDoAction_FireStorm::OnAttachmentBeginOverlap(ACharacter * InAttacker, AActor * InAttackCauser, ACharacter * InOtherCharacter)
+void ACDoAction_FireStorm::OnAttachmentBeginOverlap(ACharacter* InAttacker, AActor* InAttackCauser, ACharacter* InOtherCharacter)
 {
-	HittedCharacter.AddUnique(InOtherCharacter);
+	HittedCharacter.AddUnique(InOtherCharacter); 
 }
 
-void ACDoAction_FireStorm::OnAttachmentEndOverlap(ACharacter * InAttacker, AActor * InAttackCauser, ACharacter * InOtherCharacter)
+void ACDoAction_FireStorm::OnAttachmentEndOverlap(ACharacter* InAttacker, AActor* InAttackCauser, ACharacter* InOtherCharacter)
 {
-	HittedCharacter.Remove(InOtherCharacter);
+	HittedCharacter.Remove(InOtherCharacter); 
 }
 
 void ACDoAction_FireStorm::DoAction()
@@ -50,50 +50,53 @@ void ACDoAction_FireStorm::DoAction()
 	CheckFalse(State->IsIdleMode());
 	State->SetActionMode();
 
-	Angle = UKismetMathLibrary::RandomFloatInRange(0, 360);
-
-	OwnerCharacter->PlayAnimMontage(Datas[0].AnimMontage, Datas[0].PlayRatio, Datas[0].StartSection);
+	Angle = UKismetMathLibrary::RandomFloatInRange(0, 360); 
+	OwnerCharacter->PlayAnimMontage(Datas[0].AnimMontage,
+									Datas[0].PlayRatio,
+									Datas[0].StartSection);
 	Datas[0].bCanMove ? Status->SetMove() : Status->SetStop();
 }
 
 void ACDoAction_FireStorm::Begin_DoAction()
 {
-	Attached = UGameplayStatics::SpawnEmitterAttached(Datas[0].Effect, Box, "");
-	Attached->SetRelativeLocation(Datas[0].EffectTransform.GetLocation());
-	Attached->SetRelativeScale3D(Datas[0].EffectTransform.GetScale3D());
+	Attached = UGameplayStatics::SpawnEmitterAttached(Datas[0].Effect, Box, ""); 
+	Attached->SetRelativeLocation(Datas[0].EffectTransform.GetLocation()); 
+	Attached->SetRelativeScale3D(Datas[0].EffectTransform.GetScale3D()); 
 
-	ACAttachment* attachment = Cast<ACAttachment>(Box->GetOwner());
-	attachment->OnCollision();
+	ACAttachment* attachment = Cast<ACAttachment>(Box->GetOwner()); 
+	attachment->OnCollision(); 
 
-	UKismetSystemLibrary::K2_SetTimer(this, "Hitted", HittedTime, true);
+	UKismetSystemLibrary::K2_SetTimer(this, "Hitted", HittedTime, true); 
 }
 
 void ACDoAction_FireStorm::End_DoAction()
 {
+	//State->SetIdleMode();
 	Status->SetMove();
 
-	FTimerDynamicDelegate timerDelegate;
-	timerDelegate.BindUFunction(this, "Finish");
-	UKismetSystemLibrary::K2_SetTimerDelegate(timerDelegate, Time, false);
+	FTimerDynamicDelegate timerDelegate; 
+	timerDelegate.BindUFunction(this, "Finish"); 
+	UKismetSystemLibrary::K2_SetTimerDelegate(timerDelegate, Time, false); 
 }
 
 void ACDoAction_FireStorm::Tick(float DeltaTime)
 {
-	Super::Tick(DeltaTime);
+	Super::Tick(DeltaTime); 
 
-	CheckFalse(*bEquipped);
-	CheckFalse(State->IsActionMode());
+	CheckFalse(*bEquipped); 
+	CheckFalse(State->IsActionMode()); 
 
-	FVector location = OwnerCharacter->GetActorLocation();
+	FVector location = OwnerCharacter->GetActorLocation(); 
 
-	Angle += Speed * DeltaTime;
+	Angle += Speed * DeltaTime; 
 	if (FMath::IsNearlyEqual(Angle, 360))
-		Angle = 0.0f;
+		Angle = 0.0f; 
 
-	FVector axis = FVector(Distance, 0, 0);
-	FVector value = axis.RotateAngleAxis(Angle, FVector(0, 0, 1));
+	FVector axis = FVector(Distance, 0, 0); 
+	FVector value = axis.RotateAngleAxis(Angle, FVector(0, 0, 1)); 
 
-	location += value;
-	Box->SetWorldLocation(location);
+	location += value; 
+	Box->SetWorldLocation(location); 
 }
+
 

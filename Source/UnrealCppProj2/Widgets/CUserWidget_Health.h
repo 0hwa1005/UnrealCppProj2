@@ -8,9 +8,7 @@ UCLASS()
 class UNREALCPPPROJ2_API UCUserWidget_Health : public UUserWidget
 {
 	GENERATED_BODY()
-
 public:
 	UFUNCTION(BlueprintImplementableEvent)
-		void Update(float Health, float MaxHealth);
-	
+		void Update(float Health , float MaxHealth);
 };

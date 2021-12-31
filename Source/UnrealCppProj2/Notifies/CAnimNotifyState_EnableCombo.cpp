@@ -16,13 +16,14 @@ void UCAnimNotifyState_EnableCombo::NotifyBegin(USkeletalMeshComponent* MeshComp
 	CheckNull(MeshComp);
 	CheckNull(MeshComp->GetOwner());
 
-	UCActionComponent* action = CHelpers::GetComponent<UCActionComponent>(MeshComp->GetOwner());
+	UCActionComponent* action =
+		CHelpers::GetComponent<UCActionComponent>(MeshComp->GetOwner());
 	CheckNull(action);
 
-	ACDoAction_Melee* melee = Cast<ACDoAction_Melee>(action->GetCurrent()->GetDoAction());
-	CheckNull(melee);
+	ACDoAction_Melee* melee = Cast<ACDoAction_Melee>(action->GetCurrent()->GetDoAction()); 
+	CheckNull(melee); 
 
-	melee->EnableCombo();
+	melee->EnableCombo(); 
 }
 
 void UCAnimNotifyState_EnableCombo::NotifyEnd(USkeletalMeshComponent* MeshComp, UAnimSequenceBase* Animation)
@@ -31,9 +32,9 @@ void UCAnimNotifyState_EnableCombo::NotifyEnd(USkeletalMeshComponent* MeshComp, 
 	CheckNull(MeshComp);
 	CheckNull(MeshComp->GetOwner());
 
-	UCActionComponent* action = CHelpers::GetComponent<UCActionComponent>(MeshComp->GetOwner());
+	UCActionComponent* action =
+		CHelpers::GetComponent<UCActionComponent>(MeshComp->GetOwner());
 	CheckNull(action);
-	action->GetCurrent()->GetEquipment()->End_Equip();
 
 	ACDoAction_Melee* melee = Cast<ACDoAction_Melee>(action->GetCurrent()->GetDoAction());
 	CheckNull(melee);

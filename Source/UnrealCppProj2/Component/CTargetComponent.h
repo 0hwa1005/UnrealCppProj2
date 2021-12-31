@@ -1,8 +1,9 @@
+
 #pragma once
 
 #include "CoreMinimal.h"
 #include "Components/ActorComponent.h"
-#include "Kismet/KismetSystemLibrary.h"
+#include "Kismet/KismetSystemLibrary.h"	// << 
 #include "CTargetComponent.generated.h"
 
 
@@ -20,37 +21,37 @@ protected:
 public:	
 	virtual void TickComponent(float DeltaTime, ELevelTick TickType, FActorComponentTickFunction* ThisTickFunction) override;
 
-private:
-	class ACharacter* OwnerCharacter;
-	class ACharacter* Target;
-	class UParticleSystemComponent* Attached;
+private :
+	class ACharacter* OwnerCharacter; 
+	class ACharacter* Target ; 
+	class UParticleSystemComponent* Attached; 
 
-private:
-	void StartTargeting();
-	void EndTargeting();
-	void SetTraceTargets();
-	void SetTarget();
-	void ChangeCursor(class ACharacter* InTarget);
-	void ChangeTarget(bool InRight);
+private :
+	void StartTargeting(); 
+	void EndTargeting(); 
+	void SetTraceTargets(); //
+	void SetTarget(); 
+	void ChangeCursor(class ACharacter* InTarget); 
+	void ChangeTarget(bool InRight); 
+	
+public :
+	void ToggleTarget(); 
+	void ChangeTargetLeft(); 
+	void ChangeTargetRight(); 
 
-public:
-	void ToggleTarget();
-	void ChangeTargetLeft();
-	void ChangeTargetRight();
-
-private:
+private :
 	UPROPERTY(EditAnywhere)
-		float TraceRadius = 1000.0f;
-	UPROPERTY(EditAnywhere)
-		TEnumAsByte<EDrawDebugTrace::Type>Debug;
-	UPROPERTY(EditAnywhere)
-		class UParticleSystem* Particle;
+		float	TraceRadius = 1000.0f; 
 
 	UPROPERTY(EditAnywhere)
-		float InteropSpeed = 2.5f;
+		TEnumAsByte<EDrawDebugTrace::Type> Debug; 
 
-private:
-	TArray<class ACharacter*> TraceTargets;
+	UPROPERTY(EditAnywhere)
+		class UParticleSystem* Particle; 
 
-		
+	UPROPERTY(EditAnywhere)
+		float	InteropSpeed = 2.5f; 
+
+private :
+	TArray<class ACharacter*> TraceTargets; 
 };

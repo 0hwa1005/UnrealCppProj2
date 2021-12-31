@@ -8,6 +8,7 @@
 #include "Component/CStateComponent.h"
 #include "Component/CStatusComponent.h"
 
+
 ACEquipment::ACEquipment()
 {
 
@@ -15,22 +16,23 @@ ACEquipment::ACEquipment()
 
 void ACEquipment::BeginPlay()
 {
-	OwnerCharacter = Cast<ACharacter>(GetOwner());
-	State = CHelpers::GetComponent<UCStateComponent>(OwnerCharacter);
+	OwnerCharacter = Cast<ACharacter>(GetOwner()); 
+	State = CHelpers::GetComponent<UCStateComponent>(OwnerCharacter); 
 	Status = CHelpers::GetComponent<UCStatusComponent>(OwnerCharacter);
+
 	Super::BeginPlay();
-	
 }
 
 void ACEquipment::Equip_Implementation()
 {
-	State->SetEquipMode();
+	State->SetEquipMode(); 
 
+	// : 
 	if (Data.AnimMontage != NULL)
-		OwnerCharacter->PlayAnimMontage(Data.AnimMontage, Data.PlayRatio, Data.StartSection);
+		OwnerCharacter->PlayAnimMontage(Data.AnimMontage, Data.PlayRatio, Data.StartSection); 
 	else
 	{
-		End_Equip();
+		End_Equip(); 
 	}
 
 	if (Data.bPawnControl == true)
@@ -38,32 +40,32 @@ void ACEquipment::Equip_Implementation()
 		OwnerCharacter->bUseControllerRotationYaw = true;
 		OwnerCharacter->GetCharacterMovement()->bOrientRotationToMovement = false;
 	}
-	
-	IICharacter* character = Cast<IICharacter>(OwnerCharacter);
-	CheckNull(character);
+	// >> : 
+	IICharacter* character = Cast<IICharacter>(OwnerCharacter); 
+	CheckNull(character); 
 
-	character->ChangeColor(Color);
+	character->ChangeColor(Color); 
 }
+
 
 void ACEquipment::Begin_Equip_Implementation()
 {
 	if (OnEquipmentDelegate.IsBound())
-		OnEquipmentDelegate.Broadcast();
+		OnEquipmentDelegate.Broadcast(); 
 }
 
 void ACEquipment::End_Equip_Implementation()
 {
-	bEquipped = true;
-	State->SetIdleMode();
+	bEquipped = true; 
+	State->SetIdleMode(); 
 }
 
 void ACEquipment::Unequip_Implementation()
 {
-	bEquipped = false;
+	bEquipped = false ;
 	if (OnUnequipmentDelegate.IsBound())
-		OnUnequipmentDelegate.Broadcast();
+		OnUnequipmentDelegate.Broadcast(); 
 
 	OwnerCharacter->bUseControllerRotationYaw = false;
 	OwnerCharacter->GetCharacterMovement()->bOrientRotationToMovement = true;
 }
-

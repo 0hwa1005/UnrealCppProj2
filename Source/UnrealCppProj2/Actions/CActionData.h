@@ -9,17 +9,17 @@ struct FEquipmentData
 {
 	GENERATED_BODY()
 
-public:
+public :
 	UPROPERTY(EditAnywhere)
-		class UAnimMontage* AnimMontage;
+		class UAnimMontage* AnimMontage; 
 	UPROPERTY(EditAnywhere)
-		float PlayRatio = 1.0f;
+		float	PlayRatio = 1.0f; 
 	UPROPERTY(EditAnywhere)
-		FName StartSection;
+		FName	StartSection; 
 	UPROPERTY(EditAnywhere)
-		bool bCanMove = true;
+		bool	bCanMove = true; 
 	UPROPERTY(EditAnywhere)
-		bool bPawnControl = true;
+		bool	bPawnControl = true; 
 };
 
 USTRUCT(BlueprintType)
@@ -27,23 +27,24 @@ struct FDoActionData : public FEquipmentData
 {
 	GENERATED_BODY()
 
-public:
+public :
 	UPROPERTY(EditAnywhere)
-		float Power = 5.0f;
+		float Power = 5.0f; 
 
 	UPROPERTY(EditAnywhere)
-		float HitStop;
+		float HitStop; 
 
 	UPROPERTY(EditAnywhere)
-		class UParticleSystem* Effect;
+		class UParticleSystem* Effect; 
 
 	UPROPERTY(EditAnywhere)
-		FTransform EffectTransform;
+		FTransform EffectTransform; 
 
 	UPROPERTY(EditAnywhere)
-		TSubclassOf<class UCameraShake> ShakeClass;
-	
+		TSubclassOf<class UCameraShake> ShakeClass; 
 };
+
+
 
 UCLASS()
 class UNREALCPPPROJ2_API UCActionData : public UDataAsset
@@ -51,35 +52,37 @@ class UNREALCPPPROJ2_API UCActionData : public UDataAsset
 	GENERATED_BODY()
 
 private:
-	class ACEquipment* Equipment;
-	class ACAttachment* Attachment;
-	class ACDoAction* DoAction;
+	class ACEquipment* Equipment; 
+	class ACAttachment* Attachment; 
+	class ACDoAction* DoAction; 
 
-public:
-	void BeginPlay(class ACharacter* InOwnerCharacter);
+public :
+	void BeginPlay(class ACharacter* InOwnerCharacter); 
 
-public:
+public :
 	UPROPERTY(BlueprintReadOnly, EditAnywhere)
 		TSubclassOf<class ACAttachment> AttachmentClass;
 	UPROPERTY(BlueprintReadOnly, EditAnywhere)
-		TSubclassOf<class ACEquipment> EquipmentClass;
+		TSubclassOf<class ACEquipment> EquipmentClass; 
 	UPROPERTY(BlueprintReadOnly, EditAnywhere)
-		FEquipmentData EquipmentData;
+		FEquipmentData	EquipmentData; 
 
 	UPROPERTY(BlueprintReadOnly, EditAnywhere)
-		TSubclassOf<class ACDoAction>	DoActionClass;
+		TSubclassOf<class ACDoAction>	DoActionClass; 
 	UPROPERTY(BlueprintReadOnly, EditAnywhere)
-		TArray<FDoActionData>			DoActionDatas;
+		TArray< FDoActionData>			DoActionDatas; 
 
 	UPROPERTY(BlueprintReadOnly, EditAnywhere)
-		FLinearColor			EquipmentColor;
+		FLinearColor					EquipmentColor; 
 
-public:
+public :
 	FORCEINLINE class ACEquipment* GetEquipment() { return Equipment; }
 	FORCEINLINE class ACDoAction* GetDoAction() { return DoAction; }
 	FORCEINLINE class ACAttachment* GetAttachment() { return Attachment; }
 	FORCEINLINE FLinearColor GetEquipmentColor() { return EquipmentColor; }
 
+
 private:
 	FString GetLabelName(class ACharacter* InOwnerCharacter, FString InName);
+
 };

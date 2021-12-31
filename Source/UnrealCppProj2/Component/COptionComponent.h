@@ -10,21 +10,20 @@ class UNREALCPPPROJ2_API UCOptionComponent : public UActorComponent
 {
 	GENERATED_BODY()
 
-private:
+private :
 	UPROPERTY(EditDefaultsOnly)
-		float HorizontalLookRate = 45;
+		float HorizontalLookRate = 45; 
 	UPROPERTY(EditDefaultsOnly)
 		float VerticalLookRate = 45;
-
-public:
-	FORCEINLINE float GetHorizontalLookRate() {return HorizontalLookRate;}
-	FORCEINLINE float GetVerticalLookRate() {return VerticalLookRate;}
-
+public :
+	FORCEINLINE float GetHorizontalLookRate() {	return HorizontalLookRate; }
+	FORCEINLINE float GetVerticalLookRate() { return VerticalLookRate; }
 
 public:	
 	UCOptionComponent();
 
 protected:
+
 	virtual void BeginPlay() override;
 
 };

@@ -6,9 +6,10 @@
 #include "Component/CStateComponent.h"
 #include "Component/CStatusComponent.h"
 
+
 ACAttachment::ACAttachment()
 {
-	CHelpers::CreateComponent<USceneComponent>(this, &Scene, "Scene");
+	CHelpers::CreateComponent<USceneComponent>(this, &Scene, "Scene"); 
 }
 
 void ACAttachment::BeginPlay()
@@ -17,52 +18,54 @@ void ACAttachment::BeginPlay()
 	State = CHelpers::GetComponent<UCStateComponent>(OwnerCharacter);
 	Status = CHelpers::GetComponent<UCStatusComponent>(OwnerCharacter);
 
-	GetComponents<UShapeComponent>(ShapeComponents);
+	GetComponents<UShapeComponent>(ShapeComponents); 
 	for (UShapeComponent* component : ShapeComponents)
 	{
-		component->OnComponentBeginOverlap.AddDynamic(this, &ACAttachment::OnComponentBeginOverlap);
+		component->OnComponentBeginOverlap.AddDynamic(this, &ACAttachment::OnComponentBeginOverlap); 
 		component->OnComponentEndOverlap.AddDynamic(this, &ACAttachment::OnComponentEndOverlap);
 	}
 
-	OffCollision();
+	OffCollision(); 
 
 	Super::BeginPlay();
 }
 
 void ACAttachment::AttachTo(FName InSocketName)
 {
-	AttachToComponent(OwnerCharacter->GetMesh(), FAttachmentTransformRules(EAttachmentRule::KeepRelative, true), InSocketName);
+	AttachToComponent(OwnerCharacter->GetMesh(),
+		FAttachmentTransformRules(EAttachmentRule::KeepRelative, true), InSocketName); 
 }
 
-void ACAttachment::AttachToCollision(UShapeComponent * InComponent, FName InSocketName)
+void ACAttachment::AttachToCollision(UShapeComponent* InComponent, FName InSocketName)
 {
-	CLog::Log(InComponent->GetName());
-	InComponent->AttachToComponent(OwnerCharacter->GetMesh(),
+	CLog::Log(InComponent->GetName()); 
+	InComponent->AttachToComponent(OwnerCharacter->GetMesh() ,
 		FAttachmentTransformRules(EAttachmentRule::KeepRelative, true), InSocketName);
 }
 
-void ACAttachment::OnComponentBeginOverlap(UPrimitiveComponent * OverlappedComponent, AActor * OtherActor, UPrimitiveComponent * OtherComp, int32 OtherBodyIndex, bool bFromSweep, const FHitResult & SweepResult)
+void ACAttachment::OnComponentBeginOverlap(UPrimitiveComponent* OverlappedComponent, AActor* OtherActor, UPrimitiveComponent* OtherComp, int32 OtherBodyIndex, bool bFromSweep, const FHitResult& SweepResult)
 {
-	CheckTrue(OwnerCharacter == OtherActor);
-	CheckTrue(OtherActor->GetClass() == OwnerCharacter->GetClass());
+	CheckTrue(OwnerCharacter == OtherActor); 
+	CheckTrue(OtherActor->GetClass() == OwnerCharacter->GetClass()); 
 
 	if (OnAttachmentBeginOverlap.IsBound())
-		OnAttachmentBeginOverlap.Broadcast(OwnerCharacter, this, Cast<ACharacter>(OtherActor));
+		OnAttachmentBeginOverlap.Broadcast(OwnerCharacter, this, Cast<ACharacter>(OtherActor)); 
+
 }
 
-void ACAttachment::OnComponentEndOverlap(UPrimitiveComponent * OverlappedComponent, AActor * OtherActor, UPrimitiveComponent * OtherComp, int32 OtherBodyIndex)
+void ACAttachment::OnComponentEndOverlap(UPrimitiveComponent* OverlappedComponent, AActor* OtherActor, UPrimitiveComponent* OtherComp, int32 OtherBodyIndex)
 {
 	if (OnAttachmentEndOverlap.IsBound())
-		OnAttachmentEndOverlap.Broadcast(OwnerCharacter, this, Cast<ACharacter>(OtherActor));
+		OnAttachmentEndOverlap.Broadcast(OwnerCharacter, this, Cast<ACharacter>(OtherActor)); 
 }
 
 void ACAttachment::OnCollision()
 {
 	for (UShapeComponent* component : ShapeComponents)
-		component->SetCollisionEnabled(ECollisionEnabled::QueryAndPhysics);
+		component->SetCollisionEnabled(ECollisionEnabled::QueryAndPhysics); 
 
 	if (OnAttachmentCollision.IsBound())
-		OnAttachmentCollision.Broadcast();
+		OnAttachmentCollision.Broadcast(); 
 }
 
 void ACAttachment::OffCollision()
@@ -72,6 +75,5 @@ void ACAttachment::OffCollision()
 
 	if (OffAttachmentCollision.IsBound())
 		OffAttachmentCollision.Broadcast();
+
 }
-
-
